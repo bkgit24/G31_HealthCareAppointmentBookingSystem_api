@@ -22,8 +22,8 @@ A full-stack web application designed to facilitate the appointment booking. Use
 1. **Clone the repository**:
 
    ```bash
-   
-   cd G31_Grocery_Delivery_System_Flask_Django
+   https://github.com/bkgit24/G31_HealthCareAppointmentBookingSystem_api.git
+   cd G31_HealthcareAppointmentBookingSystem_api
    ```
 
 2. **Set up a virtual environment**:
@@ -58,11 +58,11 @@ A full-stack web application designed to facilitate the appointment booking. Use
 ## 📁 Project Structure
 
 ```
-G31_Grocery_Delivery_System_Flask_Django/
-├── grocery_delivery_system_django_final/
+G31_HealthCareAppointmentBookingSystem_Django/
+├── G31_HealthCareAppointmentBookingSystem_Django/
 │   ├── manage.py
 │   ├── ...
-├── grocery_delivery_system_flask_final/
+├── G31_HealthCareAppointmentBookingSystem_Flaskl/
 │   ├── app.py
 │   ├── ...
 ├── requirements.txt
@@ -71,8 +71,8 @@ G31_Grocery_Delivery_System_Flask_Django/
 
 ## 👥 User Roles
 
-- **Admin**: Approves store creation requests and manages the platform.
-- **User**: Browses products, manages cart, and places orders.
+- **Admin**: Approves doctor servicing
+- **User**: Browses doctors,book appointments
 
 ## 🎓 Academic Project
 
