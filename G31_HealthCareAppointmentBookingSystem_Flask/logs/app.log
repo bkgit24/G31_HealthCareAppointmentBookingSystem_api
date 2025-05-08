@@ -4,3 +4,5 @@
 (Background on this error at: https://sqlalche.me/e/20/e3q8) [in C:\Users\bhave\OneDrive\Desktop\G31_HealthCareAppointmentBookingSystem_api\G31_HealthCareAppointmentBookingSystem_Flask\app.py:386]
 2025-05-08 16:45:02,776 INFO: Healthcare Appointment System startup [in C:\Users\bhave\OneDrive\Desktop\G31_HealthCareAppointmentBookingSystem_api\G31_HealthCareAppointmentBookingSystem_Flask\app.py:565]
 2025-05-08 16:45:02,796 INFO: Super admin user already exists [in C:\Users\bhave\OneDrive\Desktop\G31_HealthCareAppointmentBookingSystem_api\G31_HealthCareAppointmentBookingSystem_Flask\app.py:961]
+2025-05-08 20:18:56,492 INFO: Healthcare Appointment System startup [in C:\Users\bhave\OneDrive\Desktop\G31_HealthCareAppointmentBookingSystem_api\G31_HealthCareAppointmentBookingSystem_Flask\app.py:521]
+2025-05-08 20:18:56,516 INFO: Super admin user already exists [in C:\Users\bhave\OneDrive\Desktop\G31_HealthCareAppointmentBookingSystem_api\G31_HealthCareAppointmentBookingSystem_Flask\app.py:886]

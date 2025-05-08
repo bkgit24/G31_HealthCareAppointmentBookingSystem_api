@@ -9,7 +9,6 @@ import re
 logger = logging.getLogger('api_service')
 
 def _sanitize_query_param(value):
-    # Only allow alphanumeric, dash, underscore, and space
     if isinstance(value, str):
         return re.sub(r'[^\w\-\s]', '', value)
     return value
@@ -17,12 +16,11 @@ def _sanitize_query_param(value):
 def _validate_jwt_token(token):
     if not token or not isinstance(token, str):
         return False
-    # Basic JWT format: header.payload.signature
     return bool(re.match(r'^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+$', token))
 
 class APIService:
-    BASE_URL = getattr(settings, 'FLASK_API_URL', 'http://localhost:5000/api').rstrip('/')  # Remove trailing slash
-    TIMEOUT = 10  # seconds
+    BASE_URL = getattr(settings, 'FLASK_API_URL', 'http://localhost:5000/api').rstrip('/')
+    TIMEOUT = 10
 
     @staticmethod
     def get_headers(jwt_token=None):
@@ -159,9 +157,6 @@ class APIService:
 
     @staticmethod
     def create_appointment(appointment_data, jwt_token):
-        """
-        Create an appointment in the Flask API
-        """
         try:
             headers = {
                 'Content-Type': 'application/json',
@@ -215,7 +210,6 @@ class APIService:
 
     @staticmethod
     def get_available_slots(doctor_id, date, jwt_token=None):
-        # Validate date format (YYYY-MM-DD)
         try:
             datetime.strptime(date, '%Y-%m-%d')
         except ValueError:
