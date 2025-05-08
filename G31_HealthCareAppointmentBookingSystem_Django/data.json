@@ -1,0 +1,164 @@
+[
+    {
+        "appointment_id": 10001,
+        "service": "General Checkup",
+        "patient": "John Doe",
+        "issue": "Headache and fever",
+        "symptoms": "Dizziness, high temperature",
+        "status": "Scheduled",
+        "date": "August 16, 2024",
+        "medical_records": [
+            {
+                "diagnosis": "Migraine",
+                "treatment": "Rest and hydration"
+            }
+        ],
+        "lab_tests": [
+            {
+                "test_name": "Blood Test",
+                "description": "Complete Blood Count (CBC)",
+                "result": "Normal"
+            }
+        ],
+        "prescriptions": [
+            {
+                "medications": "Paracetamol 500mg, 2 tablets daily"
+            }
+        ]
+    },
+    {
+        "appointment_id": 10002,
+        "service": "Dermatology Consultation",
+        "patient": "Jane Smith",
+        "issue": "Skin rash",
+        "symptoms": "Itching, redness",
+        "status": "Completed",
+        "date": "August 12, 2024",
+        "medical_records": [
+            {
+                "diagnosis": "Eczema",
+                "treatment": "Topical steroid cream"
+            }
+        ],
+        "lab_tests": [
+            {
+                "test_name": "Skin Biopsy",
+                "description": "Examination of skin tissue",
+                "result": "Inflammation observed"
+            }
+        ],
+        "prescriptions": [
+            {
+                "medications": "Hydrocortisone cream, apply twice daily"
+            }
+        ]
+    },
+    {
+        "appointment_id": 10003,
+        "service": "Cardiology Consultation",
+        "patient": "Mark Johnson",
+        "issue": "Chest pain",
+        "symptoms": "Shortness of breath, tightness in chest",
+        "status": "Cancelled",
+        "date": "August 14, 2024",
+        "medical_records": [
+            {
+                "diagnosis": "Angina",
+                "treatment": "Nitroglycerin"
+            }
+        ],
+        "lab_tests": [
+            {
+                "test_name": "ECG (Electrocardiogram)",
+                "description": "Heart rhythm monitoring",
+                "result": "Abnormal heart rhythm"
+            }
+        ],
+        "prescriptions": [
+            {
+                "medications": "Nitroglycerin tablets, 1 tablet under tongue when needed"
+            }
+        ]
+    },
+    {
+        "appointment_id": 10004,
+        "service": "Pediatrics Consultation",
+        "patient": "Lucy Williams",
+        "issue": "Persistent cough",
+        "symptoms": "Wheezing, sore throat",
+        "status": "Completed",
+        "date": "August 10, 2024",
+        "medical_records": [
+            {
+                "diagnosis": "Bronchitis",
+                "treatment": "Antibiotics"
+            }
+        ],
+        "lab_tests": [
+            {
+                "test_name": "Chest X-Ray",
+                "description": "Imaging of lungs",
+                "result": "Inflammation in bronchial tubes"
+            }
+        ],
+        "prescriptions": [
+            {
+                "medications": "Amoxicillin 250mg, 3 times daily for 7 days"
+            }
+        ]
+    },
+    {
+        "appointment_id": 10005,
+        "service": "Orthopedics Consultation",
+        "patient": "Michael Brown",
+        "issue": "Knee pain",
+        "symptoms": "Swelling, difficulty walking",
+        "status": "Scheduled",
+        "date": "August 18, 2024",
+        "medical_records": [
+            {
+                "diagnosis": "Arthritis",
+                "treatment": "Physical therapy, pain management"
+            }
+        ],
+        "lab_tests": [
+            {
+                "test_name": "MRI Scan",
+                "description": "Detailed imaging of knee joint",
+                "result": "Joint degeneration observed"
+            }
+        ],
+        "prescriptions": [
+            {
+                "medications": "Ibuprofen 400mg, 1 tablet every 6 hours as needed"
+            }
+        ]
+    },
+    {
+        "appointment_id": 10006,
+        "service": "Gastroenterology Consultation",
+        "patient": "Emily Davis",
+        "issue": "Abdominal pain",
+        "symptoms": "Bloating, nausea",
+        "status": "Completed",
+        "date": "August 15, 2024",
+        "medical_records": [
+            {
+                "diagnosis": "Irritable Bowel Syndrome (IBS)",
+                "treatment": "Dietary changes, medication"
+            }
+        ],
+        "lab_tests": [
+            {
+                "test_name": "Colonoscopy",
+                "description": "Examination of the large intestine",
+                "result": "No significant abnormalities"
+            }
+        ],
+        "prescriptions": [
+            {
+                "medications": "Antispasmodic medication, 1 tablet before meals"
+            }
+        ]
+    }
+]

@@ -1,0 +1,133 @@
+h1 {
+    text-align: center;
+    color: #c0392b;
+    font-size: 36px;
+    font-weight: 700;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2); 
+    margin-bottom: 20px;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+h1:hover {
+    color: #000000;  /* A brighter red on hover */
+    transform: scale(1.05); /* Slight zoom effect */
+}
+
+.doctor-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08), 
+                0 2px 4px rgba(0, 0, 0, 0.04);
+    padding: 20px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.doctor-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12), 
+                0 4px 8px rgba(0, 0, 0, 0.06);
+}
+
+select{
+    padding: 5px;
+}
+
+
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 0 80px; /* Added more padding on left and right */
+}
+
+.doctor-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: box-shadow 0.3s ease;
+    font-family: Arial, sans-serif;
+    margin: 5%;
+}
+
+.doctor-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.doctor-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.doctor-image {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.doctor-info {
+    flex: 1;
+}
+
+.doctor-info h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+    font-weight: bold;
+}
+
+.doctor-info p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #777;
+}
+
+.book-slot-container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    justify-content: space-between;
+}
+
+.book-slot-container select {
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.book-slot-container button {
+    background-color: #4d1a1a;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.book-slot-container button:hover {
+    background-color: #3b1414;
+}
+.btn2{
+    margin-left: 30px;
+
+    
+}
+
+@media (max-width: 1200px) {
+    .cards-container {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 0 40px; /* Reduced padding on smaller screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .cards-container {
+        grid-template-columns: 1fr;
+        padding: 0 20px; /* Even smaller padding on mobile */
+    }
+}
+

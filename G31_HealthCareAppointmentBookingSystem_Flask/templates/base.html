@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} {% endblock %}</title>
+    <!-- <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />-->
+     <link rel="icon" href="/static/images/logo.png" type="image/png"> 
+     <link rel="stylesheet" href="/static/css/index.css">
+     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+     
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="nav__header">
+                <div class="nav__logo">
+                    <a href="" class="logo">
+                        <img src="/static/images/logo.png" alt="logo" class="logo-white">
+                        <span>Doccure</span>
+                    </a>
+                </div>
+                <div class="nav__menu__btn" id="menu-btn">
+                    <i class="ri-menu-line"></i>
+                </div>
+            </div>
+            <ul class="nav__links" id="nav-links">
+                <li><a href="{{url_for('landing')}}">Home</a></li>
+                <li><a href="{{url_for('about')}}">About</a></li>
+                <li><a href="{{url_for('appointments')}}">Book Appointments</a></li>
+                <li><a href="{{url_for('my_appointments')}}">My Appointments</a></li>
+
+
+            </ul>
+            {% if current_user.is_authenticated %}
+            <a href="{{url_for('profile')}}">
+            <div class="profile" style="display: flex;">
+                <div class="profile__icon" id="profile-icon">
+                  <i class="ri-user-3-line"></i>
+
+                </div>
+                <h4 style="margin-left: 15px; margin-top: 10px;">{{ current_user.username }}</h4>
+
+              </div>
+            </a>
+            <!-- <div class="nav__btns">
+                <div class="form-group" style="display: flex;">
+                    <img src="/static/images/profile.png" alt="" style="width: 40px;">
+                    <select class="form-control" style="border: none;">
+                    
+                      <option value="" disabled selected hidden>{{ current_user.username }}</option>
+                      <a href="{{url_for('logout')}}"><option value="1">Logout</option></a>
+                    </select>
+                  </div>
+                <button class="btn"><a href="{{url_for('logout')}}" class="btn">Logout</a></button> -->
+            <!-- </div> -->
+            {% else %}
+            <div class="nav__btns">
+                <button class="btn">
+                    <a href="{{url_for('login')}}" class="btn">Sign-in</a></button>
+            </div>
+            {% endif %}
+
+
+            
+        </nav>
+        <h1>{%block head%} {% endblock %}</h1>
+        {% block content %}
+
+
+        {% endblock %}
+
+
+
+        <footer class="footer">
+            <div class="section__container footer__container">
+                <div class="footer__col">
+                    <div class="footer__logo">
+                        <a href="" class="logo">
+                            <img src="/static/images/logo.png" alt="logo">
+                            <span>Doccure</span>
+                        </a>
+                    </div>
+                    <p>
+                        We're here to provide you with the best medical experts and a seamless appointment booking
+                        experience. Stay connected for updates, special offers and more. Appointments done easy, just
+                        <i>Doc</i> for <i>Cure</i>!
+                    </p>
+                    <ul class="footer__socials">
+                        <li>
+                            <a href=""><i class="ri-facebook-fill"></i></a>
+                            <a href=""><i class="ri-twitter-x-fill"></i></a>
+                            <a href=""><i class="ri-linkedin-fill"></i></a>
+                            <a href=""><i class="ri-instagram-line"></i></a>
+                            <a href=""><i class="ri-youtube-fill"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer__col" style="margin-left: 20%;">
+                    <h4>Our Services</h4>
+                    <ul class="footer__links">
+                        <li><a href="">Home</a></li>
+                        <li><a href="">About</a></li>
+                        <li><a href="">Book Appointments</a></li>
+                        <li><a href="">Doctors & Services</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__col" style="margin-left: 5%;">
+                    <h4>Health Checkups</h4>
+                    <ul class="footer__links">
+                        <li><a href="">Common Cold</a></li>
+                        <li><a href="">Depression</a></li>
+                        <li><a href="">Orthopedic</a></li>
+                        <li><a href="">Dental Checkup</a></li>
+                        <li><a href="">Eye Infection</a></li>
+                    </ul>
+                </div>
+                <div class="footer__col">
+                    <h4>Contact</h4>
+                    <ul class="footer__links">
+                        <li>
+                            <a href="">
+                                <span><i class="ri-phone-fill"></i></span> +1234567890
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <span><i class="ri-map-pin-fill"></i></span> Chitkara University, Punjab
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <span><i class="ri-mail-fill"></i></span> doccure@gmail.com
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bar">
+                Copyright &copy; 2025 Doccure. All rights reserved.
+            </div>
+        </footer>
+
+</body>
+<script src="https://unpkg.com/scrollreveal"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="/static/js/index.js"></script>
+
+</html>

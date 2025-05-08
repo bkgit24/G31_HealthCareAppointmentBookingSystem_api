@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doccure - Doctor Login</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="icon" href="/static/images/logo.png" type="image/png">
+
+</head>
+<body>
+    {% extends 'base.html' %}
+
+    {% block content %}
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="container">
+        <div class="login-form">
+            <h1>Doctor Login</h1>
+            <form action="{{ url_for('doctor_login') }}" method="POST">
+                <div class="form-group">
+                    <input type="text" name="doctor_id" placeholder="Doctor ID" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn btn2">Login</button>
+            </form>
+        </div>
+    <p style="color: #5B2333; font-size: 10px;">*To register as a Doctor with Doccure ,Contact us at - +1234567890</p>
+
+    </div>
+    {% endblock %}
+
+
+    
+</body>
+</html>

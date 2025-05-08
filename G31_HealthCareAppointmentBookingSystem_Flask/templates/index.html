@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Doccure - Your Heath, Our Priority! {% endblock %}</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="icon" href="/static/images/logo.png" type="image/png">
+    <link rel="stylesheet" href="/static/css/index.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    
+</head>
+
+<body>
+    {% extends 'base.html' %}
+    {% block content %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-messages">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+    <div class="header__container" id="home">
+        <div class="header__image">
+            <img src="/static/images/doctor.png" alt="header">
+        </div>
+        <div class="header__content">
+            <h2></h2>
+            <h1>
+                FAST AND EASY WAY TO BOOK AN APPOINTMENT
+            </h1>
+            <p class="section__description">
+                Book appointments, consult top doctors, and get expert care with ease. Your health, just a click away! <br>
+                Quick, easy and reliable - book your appointment today!
+            </p>
+        </div>
+    </div>
+    </header>
+
+    <section class="header__form">
+        <div class="banner">
+            <div class="circle-1"></div>
+            <div class="circle-2"></div>
+            <div class="wave"></div>
+
+            <div class="banner-content">
+                <div class="text-section">
+                    <h1><i>Doccure</i></h1>
+                    <div class="nav__logo">
+                        <a href="" class="logo">
+                            <img src="/static/images/logo.png" alt="logo" class="logo-dark">
+                        </a>
+                    </div>
+                    <p>Access your medical practice dashboard and streamline patient care with our comprehensive
+                        healthcare platform. Manage appointments, view medical records, track patient progress, and
+                        collaborate with other healthcare professionals in real-time.</p>
+                </div>
+                <div class="login-section">
+                    <a href="{{ url_for('doctor_login') }}">
+                    <button class="login-btn" onclick="handleLogin()">Login as Doctor →</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section__container banner__container">
+        <div class="banner__card">
+            <h4>10+</h4>
+            <p>Years of Experience of our partnered Medical Experts</p>
+        </div>
+
+        <div class="banner__card">
+            <h4>1K+</h4>
+            <p>Happy Clients</p>
+        </div>
+
+        <div class="banner__card">
+            <h4>4.6</h4>
+            <p>Overall Ratings</p>
+        </div>
+
+    </section>
+
+    <section class="section__container client__container">
+        <h2 class="section__header">
+            Loved By Over Thousand Patients & Doctors
+        </h2>
+        <p class="section__description">
+            Discover the stories of quick online checkups and appointments through the eyes of our valued users and
+            clients.
+        </p>
+
+    </section>
+
+    <div class="swiper">
+        <div class="swiper-wrapper">
+            <!-- Slides -->
+            <div class="swiper-slide">
+                <div class="client__card" onclick="toggleFocus(this)">
+                    <div class="client__content">
+                        <div class="client__rating">
+                            <span><i class="ri-star-fill"></i></span>
+                            <span><i class="ri-star-fill"></i></span>
+                            <span><i class="ri-star-fill"></i></span>
+                            <span><i class="ri-star-fill"></i></span>
+                            <span><i class="ri-star-fill"></i></span>
+                        </div>
+                        <p>
+                            Doccure made scheduling my doctor’s appointment incredibly easy! The site is fast,
+                            user-friendly, and well-designed. I booked in minutes without any hassle.
+                        </p>
+                    </div>
+                    <div class="client__details">
+                        <img src="/static/images/rev1.jpg" alt="client">
+                        <div>
+                            <h4>Bhavesh</h4>
+                            <h5>Patient</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="client__card" onclick="toggleFocus(this)">
+                    <div class="client__content">
+                        <div class="client__rating">
+                            <span><i class="ri-star-fill"></i></span>
+                            <span><i class="ri-star-fill"></i></span>
+                            <span><i class="ri-star-fill"></i></span>
+                            <span><i class="ri-star-fill"></i></span>
+                            <span><i class="ri-star-fill"></i></span>
+                        </div>
+                        <p>
+                            I love how smooth Doccure is! Finding a doctor and booking an appointment was effortless.
+                            The interface is clean, and everything works perfectly. Great experience!
+                        </p>
+                    </div>
+                    <div class="client__details">
+                        <img src="/static/images/rev2.avif" alt="client">
+                        <div>
+                            <h4>Neha Kapoor</h4>
+                            <h5>Patient</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="client__card" onclick="toggleFocus(this)">
+                    <div class="client__content">
+                        <div class="client__rating">
+                            <span><i class="ri-star-fill"></i></span>
+                            <span><i class="ri-star-fill"></i></span>
+                            <span><i class="ri-star-fill"></i></span>
+                            <span><i class="ri-star-fill"></i></span>
+                            <span><i class="ri-star-fill"></i></span>
+                        </div>
+                        <p>
+                            Doccure saved me so much time! The booking process is simple, and the site runs smoothly.
+                            No more long phone calls — just quick, easy scheduling online.
+                        </p>
+                    </div>
+                    <div class="client__details">
+                        <img src="/static/images/rev3.jpg" alt="client">
+                        <div>
+                            <h4>Dr Vijay</h4>
+                            <h5>Doctor</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    {% endblock %}
+</body>
+
+</html>

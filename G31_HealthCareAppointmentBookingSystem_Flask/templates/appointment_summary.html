@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doccure - Appointment Summary</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sum.css') }}">
+    <link rel="icon" href="/static/images/logo.png" type="image/png">
+
+</head>
+<body>
+    {% extends 'base.html' %}
+    {% block content %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="container" style="position: relative; margin-top: -5px;">
+        <div class="summary-card">
+            <h1>Appointment Summary</h1>
+            <div class="summary-details">
+                <h3>Patient Details</h3>
+                <p>Name: {{ appointment.first_name }} {{ appointment.last_name }}</p>
+                <p>Contact: {{ appointment.contact }}</p>
+                <p>Age: {{ appointment.age }}</p>
+                <p>Gender: {{ appointment.gender }}</p>
+                <p>City: {{ appointment.city }}</p>
+                <p>Illness: {{ appointment.illness }}</p>
+
+                <h3>Doctor Details</h3>
+                <p>Doctor: {{ doctor.name }}</p>
+                <p>Specialization: {{ doctor.specialization }}</p>
+                <p>Appointment Date: {{ appointment.time_slot.split(' ')[0] }}</p>
+                <p>Time Slot: {{ appointment.time_slot.split(' ', 1)[1] }}</p>
+                <p>Consultation Fee: ₹{{ "%.2f"|format(doctor.fees) }}</p>
+
+                <div class="payment-details">
+                    <h3>Payment Information</h3>
+                    <p>Amount: ₹{{ "%.2f"|format(doctor.fees) }}</p>
+                    <p>Payment Method: Pay at Clinic</p>
+                </div>
+                <br>
+                <small style="color: #721c24;">"Timings are subject to change due to doctor availability."</small>
+            </div>
+            <div class="action-buttons">
+                <div class="edit">
+                <!-- <a href="{{ url_for('cancel_appointment') if not is_edit else url_for('update_appointment', appointment_id=appointment.appointment_id) }}" class="btn btn2">Edit</a> -->
+                </div>
+                <form action="{{ url_for('confirm_appointment') }}" method="POST" style="display: inline;">
+                    <button type="submit" class="btn btn-confirm btn2">Confirm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
+</body>
+</html>

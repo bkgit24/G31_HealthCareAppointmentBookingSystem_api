@@ -1,0 +1,213 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block content %}
+<!-- Hero Section -->
+<section class="py-5" style="background: linear-gradient(135deg, #F0FDFA 0%, #E6FFFA 100%);">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
+                <div class="text-success d-inline-flex rounded-4 mb-2 fw-bold"><span>About Us</span></div>
+                <h1 class="display-4 fw-bold text-gradient mb-4">Your Trusted Healthcare Partner</h1>
+                <p class="lead text-muted mb-4">Doccure is revolutionizing healthcare delivery by combining cutting-edge technology with compassionate care to provide accessible, high-quality medical services to everyone.</p>
+                <div class="d-flex gap-3">
+                    <a href="#mission" class="btn btn-primary btn-lg rounded-pill">Our Mission <i class="fas fa-arrow-right ms-2"></i></a>
+                    <a href="#team" class="btn btn-outline-primary btn-lg rounded-pill">Meet Our Team</a>
+                </div>
+            </div>
+            <div class="col-lg-6" data-aos="fade-left" data-aos-duration="1000">
+                <div class="position-relative">
+                    <img src="https://img.freepik.com/free-photo/doctor-with-his-arms-crossed-white-background_1368-5790.jpg" 
+                         class="img-fluid rounded-4 shadow-lg" 
+                         alt="Healthcare Professional"
+                         style="height: 500px; width: 100%; object-fit: cover;">
+                    <div class="position-absolute bottom-0 start-0 p-4">
+                        <div class="glass-effect rounded-4 p-3">
+                            <div class="row text-center g-3">
+                                <div class="col-4">
+                                    <h3 class="text-gradient mb-0">15+</h3>
+                                    <small class="text-muted">Years Experience</small>
+                                </div>
+                                <div class="col-4">
+                                    <h3 class="text-gradient mb-0">50k+</h3>
+                                    <small class="text-muted">Happy Patients</small>
+                                </div>
+                                <div class="col-4">
+                                    <h3 class="text-gradient mb-0">100+</h3>
+                                    <small class="text-muted">Expert Doctors</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Mission & Vision Section -->
+<section id="mission" class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="glass-effect p-4 rounded-4 h-100">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="rounded-circle p-3 me-3" style="background: linear-gradient(45deg, #00B5D8, #319795);">
+                            <i class="fas fa-bullseye fa-2x text-white"></i>
+                        </div>
+                        <h3 class="h4 mb-0 text-gradient">Our Mission</h3>
+                    </div>
+                    <p class="text-muted mb-0">To provide accessible, high-quality healthcare services through innovative technology and compassionate care, ensuring better health outcomes for all our patients.</p>
+                </div>
+            </div>
+            <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="glass-effect p-4 rounded-4 h-100">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="rounded-circle p-3 me-3" style="background: linear-gradient(45deg, #00B5D8, #319795);">
+                            <i class="fas fa-eye fa-2x text-white"></i>
+                        </div>
+                        <h3 class="h4 mb-0 text-gradient">Our Vision</h3>
+                    </div>
+                    <p class="text-muted mb-0">To be the leading digital healthcare platform, transforming the way healthcare is delivered and experienced by patients worldwide.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Values Section -->
+<section class="py-5" style="background: linear-gradient(135deg, #F0FDFA 0%, #E6FFFA 100%);">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold text-gradient">Our Core Values</h2>
+            <p class="lead text-muted">The principles that guide everything we do</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="glass-effect p-4 rounded-4 text-center h-100">
+                    <div class="rounded-circle p-3 mx-auto mb-3" style="background: linear-gradient(45deg, #00B5D8, #319795); width: 80px;">
+                        <i class="fas fa-heart fa-2x text-white"></i>
+                    </div>
+                    <h4 class="h5 mb-3">Compassion</h4>
+                    <p class="text-muted mb-0">We treat every patient with empathy, understanding, and respect.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="glass-effect p-4 rounded-4 text-center h-100">
+                    <div class="rounded-circle p-3 mx-auto mb-3" style="background: linear-gradient(45deg, #00B5D8, #319795); width: 80px;">
+                        <i class="fas fa-shield-alt fa-2x text-white"></i>
+                    </div>
+                    <h4 class="h5 mb-3">Excellence</h4>
+                    <p class="text-muted mb-0">We strive for the highest standards in healthcare delivery.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="glass-effect p-4 rounded-4 text-center h-100">
+                    <div class="rounded-circle p-3 mx-auto mb-3" style="background: linear-gradient(45deg, #00B5D8, #319795); width: 80px;">
+                        <i class="fas fa-lightbulb fa-2x text-white"></i>
+                    </div>
+                    <h4 class="h5 mb-3">Innovation</h4>
+                    <p class="text-muted mb-0">We embrace new technologies to improve healthcare outcomes.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                <div class="glass-effect p-4 rounded-4 text-center h-100">
+                    <div class="rounded-circle p-3 mx-auto mb-3" style="background: linear-gradient(45deg, #00B5D8, #319795); width: 80px;">
+                        <i class="fas fa-handshake fa-2x text-white"></i>
+                    </div>
+                    <h4 class="h5 mb-3">Integrity</h4>
+                    <p class="text-muted mb-0">We maintain the highest ethical standards in all our operations.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section id="team" class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold text-gradient">Meet Our Leadership Team</h2>
+            <p class="lead text-muted">Expert professionals dedicated to your health</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="glass-effect rounded-4 overflow-hidden">
+                    <img src="https://img.freepik.com/premium-vector/vector-happy-people-showing-various-positive-emotions-with-gestures-ok-sign_844724-2598.jpg?w=826" alt="Team Member" class="img-fluid" style="height: 300px; width: 100%; object-fit: cover;">
+                    <div class="p-4">
+                        <h4 class="h5 mb-1">Aditya</h4>
+                        <p class="text-muted mb-2">Chief Medical Officer</p>
+                        <div class="d-flex gap-2">
+                            <a href="#" class="text-muted"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="text-muted"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="glass-effect rounded-4 overflow-hidden">
+                    <img src="https://img.freepik.com/premium-vector/vector-illustration-smiling-woman_844724-4745.jpg?w=826" alt="Team Member" class="img-fluid" style="height: 300px; width: 100%; object-fit: cover;">
+                    <div class="p-4">
+                        <h4 class="h5 mb-1">Bhavya Kakkar</h4>
+                        <p class="text-muted mb-2">Head of Operations</p>
+                        <div class="d-flex gap-2">
+                            <a href="#" class="text-muted"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="text-muted"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="glass-effect rounded-4 overflow-hidden">
+                    <img src="https://img.freepik.com/premium-vector/vector-guy-expressing-thumbs-up_995281-3313.jpg?w=826" alt="Team Member" class="img-fluid" style="height: 300px; width: 100%; object-fit: cover;">
+                    <div class="p-4">
+                        <h4 class="h5 mb-1">Akash </h4>
+                        <p class="text-muted mb-2">Technical Director</p>
+                        <div class="d-flex gap-2">
+                            <a href="#" class="text-muted"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="text-muted"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                <div class="glass-effect rounded-4 overflow-hidden">
+                    <img src="https://img.freepik.com/premium-vector/vector-guy-expressing-thumbs-up_995281-3259.jpg?w=826" alt="Team Member" class="img-fluid" style="height: 300px; width: 100%; object-fit: cover;">
+                    <div class="p-4">
+                        <h4 class="h5 mb-1">Bhavya Singla</h4>
+                        <p class="text-muted mb-2">Patient Care Director</p>
+                        <div class="d-flex gap-2">
+                            <a href="#" class="text-muted"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="text-muted"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="glass-effect p-5 rounded-4 position-relative overflow-hidden">
+            <div class="position-absolute" 
+                 style="width: 300px; height: 300px; background: linear-gradient(45deg, rgba(0,181,216,0.1), rgba(49,151,149,0.1)); 
+                        top: -150px; right: -150px; border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+                        animation: float 8s ease-in-out infinite;">
+            </div>
+            <div class="row align-items-center position-relative">
+                <div class="col-lg-8">
+                    <h2 class="display-5 fw-bold text-gradient mb-3">Join Our Healthcare Journey</h2>
+                    <p class="lead text-muted mb-0">Experience the future of healthcare with Doccure</p>
+                </div>
+                <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+                    <a href="{% url 'userauths:sign-up' %}" 
+                       class="btn btn-lg btn-gradient rounded-pill hover-lift px-5 py-3">
+                        Get Started Now <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

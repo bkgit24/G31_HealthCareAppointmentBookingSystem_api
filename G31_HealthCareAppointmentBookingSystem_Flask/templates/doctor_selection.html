@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Doccure - Select Doctor{% endblock %}</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/static/css/select.css">
+    <link rel="icon" href="/static/images/logo.png" type="image/png">
+
+</head>
+<body>
+    {% extends 'base.html' %}
+    {% block content %}
+    
+    <!-- {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    
+
+    <div class="container">
+    <h1>Select Doctor and Time Slot</h1>
+
+        
+        {% if doctors %}
+            <div class="doctors-grid">
+                {% for doctor in doctors %}
+                <div class="doctor-card">
+                    <img src="{{ doctor.image }}" alt="{{ doctor.name }}" class="doctor-image">
+                    <h3>{{ doctor.name }}</h3>
+                    <p>Experience: {{ doctor.experience }} years</p>
+                    <p>Specialization: {{ doctor.specialization }}</p>
+                    <p class="doctor-fees">Consultation Fee: ₹{{ "%.2f"|format(doctor.fees) }}</p>
+                    <div class="time-slots">
+                        <h4>Available Slots</h4>
+                        <form action="{{ url_for('appointment_summary') }}" method="POST">
+                            <input type="hidden" name="doctor_id" value="{{ doctor.id }}">
+                            <select name="time_slot" required>
+                                {% for slot in doctor.available_slots %}
+                                <option value="{{ slot }}">{{ slot }}</option>
+                                {% endfor %}
+                            </select>
+                            <button type="submit" class="btn btn2">Book Slot</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-doctors">
+                <p>No doctors available for the selected city and illness. Please try different options.</p>
+                <a href="{{ url_for('book_appointment') }}" class="btn">Go Back</a>
+            </div>
+        {% endif %}
+    </div> -->
+    <div class="container">
+        <h1>Select Doctor & Time Slot</h1>
+        <div class="cards-container">
+            {% for doctor in doctors %}
+            <div class="doctor-card">
+                <img src="{{ doctor.image }}" alt="{{ doctor.name }}" class="doctor-image" style="width: 55px; height: 65px;">
+                <h3>{{ doctor.name }}</h3>
+                <p>Hospital: CureCenter</p>
+                <p>Experience: {{ doctor.experience }} years of experience</p>
+                <p>Specialization: {{ doctor.specialization }}</p>
+                <div class="time-slots">
+                    <h4>Available Slots</h4>
+                    <form action="{{ url_for('appointment_summary') }}" method="POST">
+                        <input type="hidden" name="doctor_id" value="{{ doctor.id }}">
+                        <select name="time_slot" required>
+                            {% for slot in doctor.available_slots %}
+                            <option value="{{ slot }}">{{ slot }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" class="btn btn2">Book Slot</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% endblock %}
+</body>
+</html>

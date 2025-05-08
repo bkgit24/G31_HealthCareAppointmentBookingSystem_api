@@ -1,0 +1,53 @@
+2025-05-07 16:59:45,092 ERROR: Exception on / [GET] [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py:825]
+Traceback (most recent call last):
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask_restful\__init__.py", line 298, in error_router
+    return original_handler(e)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py", line 606, in landing
+    return render_template("index.html")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\templating.py", line 152, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\templating.py", line 133, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\templates\index.html", line 18, in top-level template code
+    {% extends 'base.html' %}
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\templates\base.html", line 35, in top-level template code
+    <li><a href="{{url_for('my_appointments')}}">My Appointments</a></li>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py", line 1071, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py", line 1060, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\werkzeug\routing\map.py", line 919, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'my_appointments'. Did you mean 'appointments' instead?
+2025-05-07 16:59:45,140 ERROR: Server Error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application. [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:576]
+2025-05-07 17:00:49,253 ERROR: Page not found: http://localhost:5000/api/sync-user [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:567]
+2025-05-07 17:01:25,844 INFO: Healthcare Appointment System startup [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:545]
+2025-05-07 17:01:25,854 INFO: Super admin user already exists [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:914]
+2025-05-07 17:05:06,621 INFO: Healthcare Appointment System startup [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:545]
+2025-05-07 17:05:06,633 INFO: Super admin user already exists [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:954]

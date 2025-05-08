@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}Appointment Details - DocCure{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <!-- Appointment Details -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4>Appointment Details</h4>
+                    <span class="badge badge-{{ appointment.status }}">
+                        {{ appointment.status|title }}
+                    </span>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5>Doctor Information</h5>
+                            <div class="d-flex align-items-center mb-3">
+                                <img src="{{ appointment.doctor.image_url or url_for('static', filename='images/default-doctor.jpg') }}" 
+                                     alt="Dr. {{ appointment.doctor.name }}" 
+                                     class="rounded-circle mr-3" 
+                                     style="width: 64px; height: 64px; object-fit: cover;">
+                                <div>
+                                    <h6 class="mb-0">Dr. {{ appointment.doctor.name }}</h6>
+                                    <p class="text-muted mb-0">{{ appointment.doctor.specialization }}</p>
+                                </div>
+                            </div>
+                            <p><strong>Experience:</strong> {{ appointment.doctor.experience }} years</p>
+                            <p><strong>Consultation Fee:</strong> ${{ appointment.doctor.consultation_fee }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Appointment Information</h5>
+                            <p><strong>Date:</strong> {{ appointment.appointment_date.strftime('%B %d, %Y') }}</p>
+                            <p><strong>Time:</strong> {{ appointment.time_slot }}</p>
+                            <p><strong>Reason:</strong> {{ appointment.illness }}</p>
+                            <p><strong>Status:</strong> {{ appointment.status|title }}</p>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5>Patient Information</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Name:</strong> {{ appointment.patient_first_name }} {{ appointment.patient_last_name }}</p>
+                                    <p><strong>Age:</strong> {{ appointment.patient_age }}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Gender:</strong> {{ appointment.patient_gender }}</p>
+                                    <p><strong>Contact:</strong> {{ appointment.patient_contact }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if appointment.notes %}
+                    <div class="row">
+                        <div class="col-12">
+                            <h5>Doctor's Notes</h5>
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    {{ appointment.notes }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions Sidebar -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Actions</h5>
+                </div>
+                <div class="card-body">
+                    {% if appointment.status in ['pending', 'confirmed'] %}
+                        <a href="{{ url_for('cancel_appointment', appointment_id=appointment.id) }}" 
+                           class="btn btn-danger btn-block mb-2"
+                           onclick="return confirm('Are you sure you want to cancel this appointment?')">
+                            Cancel Appointment
+                        </a>
+                        <a href="{{ url_for('reschedule_appointment', appointment_id=appointment.id) }}" 
+                           class="btn btn-warning btn-block mb-2">
+                            Reschedule Appointment
+                        </a>
+                    {% endif %}
+
+                    {% if appointment.status == 'completed' and not appointment.review %}
+                        <a href="{{ url_for('add_review', appointment_id=appointment.id) }}" 
+                           class="btn btn-success btn-block mb-2">
+                            Add Review
+                        </a>
+                    {% endif %}
+
+                    <a href="{{ url_for('appointments_list') }}" class="btn btn-secondary btn-block">
+                        Back to Appointments
+                    </a>
+                </div>
+            </div>
+
+            {% if appointment.review %}
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5>Your Review</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-2">
+                        {% for i in range(appointment.review.rating) %}
+                            <i class="fas fa-star text-warning"></i>
+                        {% endfor %}
+                        {% for i in range(5 - appointment.review.rating) %}
+                            <i class="far fa-star text-warning"></i>
+                        {% endfor %}
+                    </div>
+                    <p class="mb-0">{{ appointment.review.comment }}</p>
+                    <small class="text-muted">
+                        Posted on {{ appointment.review.created_at.strftime('%B %d, %Y') }}
+                    </small>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+.badge {
+    padding: 0.5em 0.75em;
+    font-size: 0.85em;
+}
+
+.badge-pending {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.badge-confirmed {
+    background-color: #17a2b8;
+    color: #fff;
+}
+
+.badge-completed {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.badge-cancelled {
+    background-color: #dc3545;
+    color: #fff;
+}
+</style>
+{% endblock %} 

@@ -1,0 +1,238 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% load socialaccount %}
+
+{% block content %}
+<div class="min-vh-100 d-flex align-items-center" style="background: #f8f9fa;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8 p-5">
+                <!-- Logo and Header -->
+                <div class="text-center mb-5">
+                    <h1 class="display-6 fw-bold mb-3" style="color: #1a1a1a;">Create your account</h1>
+                    <p class="text-muted">Join our community of healthcare professionals and patients</p>
+                </div>
+
+                <!-- Error Messages -->
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                {% if form.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        <ul class="mb-0">
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                <!-- Social Sign-up -->
+                {% get_providers as socialaccount_providers %}
+                {% if socialaccount_providers %}
+                    <div class="d-grid gap-3 mb-4">
+                        <button class="btn btn-light d-flex align-items-center justify-content-center py-2 px-4 rounded-3" style="border: 1px solid #e0e0e0; transition: all 0.2s ease;">
+                            <img src="{% static 'assets/images/google.webp' %}" alt="Google" class="me-3" height="24">
+                            <a href="{% provider_login_url 'google' %}" style="text-decoration: none; color: #319795;">Continue with Google</a>
+                        </button>
+                    </div>
+
+                    <div class="position-relative my-4">
+                        <hr class="my-4">
+                        <span class="position-absolute top-50 start-50 translate-middle bg-light px-3 text-muted small">or sign up with email</span>
+                    </div>
+                {% endif %}
+
+                <!-- Form -->
+                <form method="post" action="{% url 'userauths:sign-up' %}">
+                    {% csrf_token %}
+                    <div class="row g-3">
+                        {% for field in form %}
+                        <div class="col-12 mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label fw-medium">{{ field.label }}</label>
+                            <div class="input-group bg-white rounded-3 shadow-sm">
+                                {% if field.field.widget.input_type == "password" %}
+                                    <span class="input-group-text bg-transparent border-0">
+                                        <i class="fas fa-lock text-muted"></i>
+                                    </span>
+                                {% elif field.field.widget.input_type == "email" %}
+                                    <span class="input-group-text bg-transparent border-0">
+                                        <i class="fas fa-envelope text-muted"></i>
+                                    </span>
+                                {% elif field.field.widget.input_type == "text" %}
+                                    <span class="input-group-text bg-transparent border-0">
+                                        <i class="fas fa-user text-muted"></i>
+                                    </span>
+                                {% endif %}
+                                {{ field }}
+                            </div>
+                            {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+
+                        <!-- Terms and Privacy -->
+                        <div class="col-12">
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="checkbox" id="terms" required>
+                                <label class="form-check-label small" for="terms">
+                                    I agree to the <a href="#" class="text-decoration-none">Terms of Service</a> and <a href="#" class="text-decoration-none">Privacy Policy</a>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="col-12 mt-4">
+                            <button type="submit" class="btn btn-primary w-100 py-3 rounded-3 fw-medium">
+                                Create Account
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Sign In Link -->
+                <div class="text-center mt-4">
+                    <p class="mb-0 small">Already have an account? <a href="{% url 'userauths:sign-in' %}" class="text-decoration-none fw-medium">Sign in</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Form Control Styles */
+    .form-control {
+        border: 0;
+        padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+        background-color: transparent;
+    }
+    .form-control:focus {
+        box-shadow: none;
+        background-color: transparent;
+    }
+    .input-group {
+        border: 1px solid #dee2e6;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+    .input-group-text {
+        padding-left: 1rem;
+    }
+    .input-group:focus-within {
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+    }
+    .form-select {
+        border: 0;
+        background-color: transparent;
+    }
+    .form-select:focus {
+         box-shadow: none;
+         background-color: transparent;
+    }
+
+    /* Button Styles */
+    .btn-primary {
+        background: linear-gradient(135deg, #0d6efd, #0a58ca);
+        border: none;
+        transition: all 0.2s ease;
+    }
+    .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2);
+    }
+    .btn-outline-secondary {
+        color: #6c757d;
+    }
+    .btn-outline-secondary:hover {
+        background-color: #e9ecef;
+    }
+    .btn-light:hover {
+        background-color: #f1f3f5 !important;
+        border-color: #ced4da !important;
+    }
+
+    /* Link Styles */
+    a {
+        color: #0d6efd;
+    }
+    a:hover {
+        color: #0a58ca;
+    }
+
+    /* Form Check Styles */
+    .form-check-input {
+        border-color: #ced4da;
+    }
+    .form-check-input:checked {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+    }
+
+    /* Background for HR text */
+    .bg-light {
+        background-color: #f8f9fa !important;
+    }
+
+    /* Input group button styling */
+    .input-group .btn {
+        position: relative;
+        z-index: 2;
+    }
+</style>
+
+<script>
+    // Password visibility toggle
+    document.addEventListener('DOMContentLoaded', function() {
+        const togglePassword1 = document.querySelector('#togglePassword1');
+        const togglePassword2 = document.querySelector('#togglePassword2');
+        const passwordInput1 = document.querySelector('input[name="password"]');
+        const passwordInput2 = document.querySelector('input[name="confirm_password"]');
+
+        if (togglePassword1 && passwordInput1) {
+            togglePassword1.addEventListener('click', function() {
+                const type = passwordInput1.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput1.setAttribute('type', type);
+                this.querySelector('i').classList.toggle('fa-eye');
+                this.querySelector('i').classList.toggle('fa-eye-slash');
+            });
+        }
+
+        if (togglePassword2 && passwordInput2) {
+            togglePassword2.addEventListener('click', function() {
+                const type = passwordInput2.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput2.setAttribute('type', type);
+                this.querySelector('i').classList.toggle('fa-eye');
+                this.querySelector('i').classList.toggle('fa-eye-slash');
+            });
+        }
+
+        // Add form-control class to Django form fields
+        const formControls = document.querySelectorAll('form input:not([type="checkbox"]), form select');
+        formControls.forEach(control => {
+            control.classList.add('form-control');
+            // Remove placeholder if it exists, rely on label
+            control.removeAttribute('placeholder');
+        });
+
+        // Add form-select class to select elements
+        const selects = document.querySelectorAll('form select');
+        selects.forEach(select => {
+            select.classList.add('form-select');
+            select.classList.remove('form-control'); // Remove form-control if added above
+        });
+
+    });
+</script>
+{% endblock content %}

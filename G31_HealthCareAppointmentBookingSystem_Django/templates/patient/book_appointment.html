@@ -1,0 +1,138 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h2 class="mb-4">Book an Appointment with Dr. {{ doctor.name }}</h2>
+
+                    <!-- Error Messages -->
+                    {% if messages %}
+                    <div class="alert alert-danger">
+                        {% for message in messages %}
+                            {{ message }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <form method="post" action="{% url 'patient:book_appointment' doctor.id %}">
+                        {% csrf_token %}
+                        
+                        <!-- Date Selection -->
+                        <div class="mb-4">
+                            <label for="date" class="form-label">Select Date</label>
+                            <input type="date" name="date" id="date" class="form-control" min="{{ today|date:'Y-m-d' }}" value="{{ request.GET.date }}" required>
+                        </div>
+
+                        <!-- Time Slot Selection -->
+                        <div class="mb-4">
+                            <label for="time_slot" class="form-label">Select Time Slot</label>
+                            <select name="time_slot" id="time_slot" class="form-select" required>
+                                <option value="">Select a time</option>
+                                {% for slot in available_slots %}
+                                    <option value="{{ slot }}">{{ slot }}</option>
+                                {% endfor %}
+                            </select>
+                            {% if not available_slots %}
+                                <div class="form-text text-danger">No available slots for the selected date.</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Reason for Visit -->
+                        <div class="mb-4">
+                            <label for="reason" class="form-label">Reason for Visit</label>
+                            <textarea name="reason" id="reason" class="form-control" rows="3" required></textarea>
+                        </div>
+
+                        <!-- Additional Notes -->
+                        <div class="mb-4">
+                            <label for="notes" class="form-label">Additional Notes (Optional)</label>
+                            <textarea name="notes" id="notes" class="form-control" rows="2"></textarea>
+                        </div>
+
+                        <!-- Consultation Fee -->
+                        <div class="alert alert-info mb-4">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>Consultation Fee:</span>
+                                <span class="fw-bold">${{ doctor.consultation_fee }}</span>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">Book Appointment</button>
+                        </div>
+                    </form>
+
+                    <!-- Back Link -->
+                    <div class="text-center mt-4">
+                        <a href="{% url 'patient:doctor_detail' doctor.id %}" class="text-decoration-none">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Doctor Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border: none;
+        transition: transform 0.2s ease-in-out;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+    }
+    .btn {
+        transition: all 0.2s ease-in-out;
+    }
+    .btn:hover {
+        transform: translateY(-2px);
+    }
+    .form-control:focus, .form-select:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Date input validation
+        const dateInput = document.getElementById('date');
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.min = today;
+
+        // Time slot selection
+        const timeSlotSelect = document.getElementById('time_slot');
+        const reasonTextarea = document.getElementById('reason');
+
+        // Add event listener for date change
+        dateInput.addEventListener('change', function() {
+            // Clear time slot selection
+            timeSlotSelect.innerHTML = '<option value="">Select a time</option>';
+            
+            // If date is selected, fetch available slots
+            if (this.value) {
+                window.location.href = `{% url 'patient:book_appointment' doctor.id %}?date=${this.value}`;
+            }
+        });
+
+        // Form validation
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(e) {
+            if (!timeSlotSelect.value) {
+                e.preventDefault();
+                alert('Please select a time slot');
+            }
+            if (!reasonTextarea.value.trim()) {
+                e.preventDefault();
+                alert('Please provide a reason for your visit');
+            }
+        });
+    });
+</script>
+{% endblock content %} 

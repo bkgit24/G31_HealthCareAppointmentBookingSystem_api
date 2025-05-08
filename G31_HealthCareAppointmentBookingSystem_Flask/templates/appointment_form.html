@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Book Appointment{% endblock %}</title>
+    <link rel="icon" href="/static/images/logo.png" type="image/png">
+    <link rel="stylesheet" href="/static/css/form.css">
+</head>
+<body>
+    {% extends 'base.html' %}
+    
+    {% block content %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+    <div class="main-content">
+        <div class="left-section">
+            <img src="/static/images/Untitled (1).png"  height="100%">
+        </div>
+        <div class="right-section">
+            
+            <h2>Book Your Appointment</h2>
+             
+            <br>
+            <form action="{{ url_for('update_appointment', appointment_id=appointment.id) if edit_mode else url_for('book_appointment') }}" method="POST">
+                <div class="form-group">
+                    <label>First name</label>
+                    <input type="text" name="first_name" placeholder="First Name" required>
+                </div>
+                <div class="form-group">
+                    <label>Last name</label>
+                    <input type="text" name="last_name" placeholder="Last Name" required>
+                </div>
+                <div class="form-group">
+                    <label>Contact</label>
+                    <input type="text" pattern="[0-9]{10}" placeholder="mobile number" required name="contact" minlenght="10" maxlength="10"> 
+                    <small>Enter 10 digit mobile number</small>
+                </div>
+                <div class="form-group">
+                    <select name="gender" required>
+                        <option value="">Select Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="number" name="age" placeholder="Age" required min="0" max="120">
+                </div>
+                <div class="form-group">
+                    <select name="city" required>
+                        <option value="">Select City</option>
+                        <option value="mumbai">Mumbai</option>
+                        <option value="delhi">Delhi</option>
+                        <option value="bangalore">Bangalore</option>
+                        <option value="chennai">Chennai</option>
+                        <option value="kolkata">Kolkata</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select name="illness" required>
+                        <option value="">Select Illness</option>
+                        <option value="cardiology">Heart Disease</option>
+                        <option value="orthopedics">Bone & Joint Problems</option>
+                        <option value="neurology">Neurological Issues</option>
+                        <option value="dermatology">Skin Problems</option>
+                        <option value="ent">ENT Issues</option>
+                        <option value="ophthalmology">Eye Problems</option>
+                    </select>
+                </div>
+                <div class="button-container">
+                    <button type="submit">Next</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endblock %}
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doccure - Doctor Dashboard</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> -->
+    <link rel="icon" href="/static/images/logo.png" type="image/png">
+    <link rel="stylesheet" href="/static/css/docd.css">
+    <style>
+   
+    </style>
+
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <h1>
+                    <img src="/static/images/logo.png" style="width: 25px;">Doccure</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('doctor_dashboard') }}" class="active">Dashboard</a></li>
+                <li><a href="{{ url_for('doctor_logout') }}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="container">
+        <div class="dashboard-header">
+            <h1>Welcome, {{ doctor.name }}</h1>
+            <div class="doctor-stats">
+                <div class="stat-card">
+                    <i class='bx bx-calendar-check'></i>
+                    <h3>Today's Appointments: </h3>
+                    <p class="stat-number">{{ today_appointments|length }}</p>
+                </div>
+                <div class="stat-card">
+                    <i class='bx bx-calendar-week'></i>
+                    <h3>Upcoming Appointments: </h3>
+                    <p class="stat-number">{{ upcoming_appointments|length }}</p>
+                </div>
+                <div class="stat-card">
+                    <i class='bx bx-rupee'></i>
+                    <h3>Monthly Earnings: </h3>
+                    <p class="stat-number">₹{{ "%.2f"|format(monthly_earnings) }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="appointments-section">
+            <h2>Today's Appointments</h2>
+            <div class="appointments-list">
+                {% if today_appointments %}
+                    {% for appointment in today_appointments %}
+                    <div class="appointment-card">
+                        <div class="appointment-header">
+                            <h3>Patient: {{ appointment.first_name }} {{ appointment.last_name }}</h3>
+                        </div>
+                        <div class="appointment-details">
+                            <div class="detail-column">
+                                <p><strong>Time:</strong> {{ appointment.time_slot }}</p>
+                                <p><strong>Issue:</strong> {{ appointment.illness }}</p>
+                            </div>
+                            <div class="detail-column">
+                                <p><strong>Contact:</strong> {{ appointment.contact }}</p>
+                                <p><strong>Gender:</strong> {{ appointment.gender.title() }}</p>
+                                <p><strong>Age:</strong> {{ appointment.age }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="no-appointments">No appointments scheduled for today.</p>
+                {% endif %}
+            </div>
+
+            <h2>Upcoming Appointments</h2>
+            <div class="appointments-list">
+                {% if upcoming_appointments %}
+                    {% for appointment in upcoming_appointments %}
+                    <div class="appointment-card">
+                        <div class="appointment-header">
+                            <h3>Patient: {{ appointment.first_name }} {{ appointment.last_name }}</h3>
+                            <p class="appointment-date">{{ appointment.appointment_date.strftime('%B %d, %Y') }}</p>
+                        </div>
+                        <div class="appointment-details">
+                            <div class="detail-column">
+                                <p><strong>Time:</strong> {{ appointment.time_slot }}</p>
+                                <p><strong>Issue:</strong> {{ appointment.illness }}</p>
+                            </div>
+                            <div class="detail-column">
+                                <p><strong>Contact:</strong> {{ appointment.contact }}</p>
+                                <p><strong>Gender:</strong> {{ appointment.gender.title() }}</p>
+                                <p><strong>Age:</strong> {{ appointment.age }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="no-appointments">No upcoming appointments scheduled.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+
+    <footer>
+        <p>&copy; 2025 Doccure. All rights reserved.</p>
+    </footer>
+</body>
+</html>

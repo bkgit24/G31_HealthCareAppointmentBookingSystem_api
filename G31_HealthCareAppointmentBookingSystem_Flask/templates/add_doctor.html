@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doccure - Add Doctor</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="icon" href="/static/images/logo.png" type="image/png">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Add New Doctor</h1>
+            <div class="nav-links">
+                <a href="{{ url_for('admin_dashboard') }}">Back to Dashboard</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="form-container">
+                <form action="{{ url_for('add_doctor') }}" method="POST">
+                    <div class="form-group">
+                        <label for="name">Doctor Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="specialization">Specialization</label>
+                        <select id="specialization" name="specialization" required>
+                            <option value="Cardiology">Cardiology</option>
+                            <option value="Orthopedics">Orthopedics</option>
+                            <option value="Neurology">Neurology</option>
+                            <option value="Dermatology">Dermatology</option>
+                            <option value="ENT">ENT</option>
+                            <option value="Ophthalmology">Ophthalmology</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="experience">Experience (years)</label>
+                        <input type="number" id="experience" name="experience" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <select id="city" name="city" required>
+                            <option value="Mumbai">Mumbai</option>
+                            <option value="Delhi">Delhi</option>
+                            <option value="Bangalore">Bangalore</option>
+                            <option value="Chennai">Chennai</option>
+                            <option value="Kolkata">Kolkata</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fees">Consultation Fees</label>
+                        <input type="number" id="fees" name="fees" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+
+                    <button type="submit" class="btn add-btn">Add Doctor</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

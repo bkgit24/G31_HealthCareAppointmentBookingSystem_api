@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Medical Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../static/css/profile.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="icon" href="/static/images/logo.png" type="image/png">
+
+
+</head>
+
+<body>
+    <div class="container">
+        <header class="header"> 
+            <div class="logo" style="display: flex; gap: 20px;"><img src="/static/images/logo.png" style="width: 30px;">Doccure</div>
+            <div class="header-actions">
+                <button id="notificationBtn" class="notification-button">
+                    <i class="ri-notification-line notification-icon"></i>
+                    <span class="notification-badge"></span>
+                </button>
+            </div>
+        </header>
+
+        <div class="welcome-banner">
+            <h1 class="welcome-title">Hello, {{current_user.username }}</h1>
+            <p class="welcome-subtitle">Welcome Back to your Health Dashboard</p>
+        </div>
+
+        <div class="main-grid">
+            <div class="profile-section">
+                <div class="profile-card">
+                    <div class="profile-content">
+                        <div class="profile-image-container">
+                            <img src="/static/images/prof.png" 
+                                class="profile-image" alt="Profile Photo">
+                        </div>
+                        <h2 class="profile-name">{{ current_user.username }}</h2>
+                        <div class="info-list">
+                            <div class="info-item">
+                                <div class="info-icon-container">
+                                    <i class="ri-mail-line info-icon"></i>
+                                </div>
+                                <span class="info-text">{{ current_user.email }}</span>
+                                <br>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="emergency-contact">
+                    <h3 class="section-title">Contact Us</h3>
+                    <div class="info-list">
+                        <div class="info-item">
+                            <div class="info-icon-container">
+                                <i class="ri-mail-line info-icon"></i>
+                            </div>
+                            <div class="contact-details">
+                                <a href="mailto:" style="text-decoration: none;">
+                                    <p class="contact-name">doccure@gmail.com</p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon-container">
+                                <i class="ri-phone-line info-icon"></i>
+                            </div>
+                            <span class="info-text">+1234567890</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <!-- <div class="appointment-section">
+                    <div class="appointment-header">
+                        <h3 class="section-title">Upcoming Appointment</h3>
+                    </div>
+                    {% if appointments %}
+                    {% for appointment in appointments %}
+                    {% if appointment.status == 'Confirmed' %}
+
+                    <div class="appointment-card">
+                        <div class="appointment-content">
+                            <div class="doctor-info">
+                                <div class="doctor-icon">
+                                    <i class="ri-stethoscope-line doctor-icon-image"></i>
+                                </div>
+                                <div class="doctor-details">
+                                    <h4 class="doctor-name">{{ appointment.doctor_name }}</h4>
+                                    <p class="doctor-specialty">{{appointment.time_slot}}</p>
+                                    <div class="appointment-time">
+                                        <i class="ri-time-line time-icon"></i>
+                                        <span class="time-text">{{ appointment.time_slot}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="appointment-buttons">
+                                 <button class="reschedule-button">Details</button> -->
+                                <!-- <button class="join-call-button"><a
+                                        href="{{url_for('cancel_appointment')}}">Cancel</a></button> -->
+                                        <!-- <form action="{{ url_for('cancel_appointment') }}" method="POST">
+                                            <input type="hidden" name="appointment_id" value="{{ appointment.id }}">
+                                            <button type="submit" class="btn join-call-button" onclick="return confirm('Are you sure you want to cancel this appointment?')">Cancel</button>
+                                        </form>
+                            </div>
+                        </div>
+                        {% endif %} -->
+
+                        <!-- {% endfor %} -->
+                        <!-- {% else %} -->
+                        <!-- <div class="no-appoint">
+                            <p>You don't have any appointments yet.</p>
+                            <a href="{{ url_for('book_appointment') }}" class="btn">Book an Appointment</a>
+                        </div>
+                        
+                    </div>
+                    {% endif %}
+
+                </div> -->
+                 
+
+                <div class="quick-actions">
+                    <h3 class="section-title">Quick Actions</h3>
+                    <div class="actions-grid">
+                        <button class="action-button">
+                            <a href="{{url_for('book_appointment')}}">
+                            <div class="action-icon">
+                                <i class="ri-calendar-check-line"></i>
+                            </div>
+                            <h4 class="action-title">Book Appointment</h4>
+                            <p class="action-description">Schedule a new visit</p>
+                        </a>
+                        </button>
+                        <button class="action-button">
+                            <div class="action-icon">
+                                <i class="ri-medicine-bottle-line"></i>
+                            </div>
+                            <h4 class="action-title">Prescriptions</h4>
+                            <p class="action-description">See details</p>
+                        </button>
+                        <button class="action-button">
+                            <div class="action-icon">
+                                <i class="ri-shield-star-line"></i>
+                            </div>
+                            <h4 class="action-title">Insurance Info</h4>
+                            <p class="action-description">See details</p>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <div class="nav-container">
+            <div class="nav-buttons">
+                <button class="nav-button">
+                    <a href="{{url_for('index')}}">
+                    <div class="nav-icon">
+                        <i class="ri-home-line"></i>
+                    </div>
+                    <span class="nav-label">Home</span>
+                    </a>
+                </button>
+                <button class="nav-button active">
+                    <div class="nav-icon">
+                        <i class="ri-user-line"></i>
+                    </div>
+                    <span class="nav-label">Profile</span>
+                </button>
+                <button class="nav-button active">
+                    <a href="{{url_for('logout')}}">
+                    <div class="nav-icon">
+                        <i class="ri-logout-box-r-line"></i>
+                    </div>
+                    <span class="nav-label">logout</span>
+                </a>
+                </button>
+            </div>
+        </div>
+    </nav>
+    <script src="../static/js/profile.js">
+    </script>
+
+
+    <!-- Prescription Popup -->
+    <div id="prescriptions-popup" class="popup-overlay">
+        <div class="popup-card">
+            <button class="popup-close">&times;</button>
+            <div class="popup-header">
+                <h3 class="popup-title">Prescriptions</h3>
+            </div>
+            <div class="popup-content">
+                <div class="prescription-item">
+                    <h4> <strong>Lisinopril (20mg) </strong></h4>
+                    <p>Take once daily • Refills: 3 remaining</p>
+                    <p>Prescribed by: Dr. Sarah Johnson • Last filled: Jan 15, 2025</p>
+                </div>
+                <hr style="margin: 20px 0">
+                <div class="prescription-item">
+                    <h4><strong>Metformin (500mg)</strong></h4>
+                    <p>Take twice daily • Refills: 5 remaining</p>
+                    <p>Prescribed by: Dr. Neha Mathur • Last filled: Feb 2, 2025</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Insurance Info Popup -->
+    <div id="insurance-popup" class="popup-overlay">
+        <div class="popup-card">
+            <button class="popup-close">&times;</button>
+            <div class="popup-header">
+                <h3 class="popup-title">Insurance Information</h3>
+            </div>
+            <div class="popup-content">
+                <div class="insurance-details">
+                    <p><strong>Plan:</strong> Doccure Life insurance</p>
+                    <p><strong>Member ID:</strong> AD123456</p>
+                    <p><strong>Group Number:</strong> ABC123456</p>
+                    <p><strong>Coverage Period:</strong> Jan 1, 2025 - Dec 31, 2025</p>
+                    <p><strong>Primary Care Copay:</strong> RS10,000</p>
+                    <p><strong>Specialist Copay:</strong> RS15,000</p>
+                    <p><strong>Deductible:</strong> RS10,000</p>
+                    <p><strong>Out-of-pocket Maximum:</strong> RS50,000</p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>

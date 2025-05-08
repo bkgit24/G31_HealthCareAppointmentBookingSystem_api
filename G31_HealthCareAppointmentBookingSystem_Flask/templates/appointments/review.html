@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Add Review - DocCure{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Add Review for Dr. {{ appointment.doctor.name }}</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{{ url_for('add_review', appointment_id=appointment.id) }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        
+                        <div class="form-group">
+                            <label>Rating</label>
+                            <div class="rating">
+                                {% for i in range(5, 0, -1) %}
+                                    <input type="radio" name="rating" value="{{ i }}" id="star{{ i }}" required>
+                                    <label for="star{{ i }}"><i class="fas fa-star"></i></label>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="comment">Your Review</label>
+                            <textarea class="form-control" id="comment" name="comment" rows="4" required
+                                      placeholder="Share your experience with Dr. {{ appointment.doctor.name }}"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Submit Review</button>
+                            <a href="{{ url_for('appointment_detail', appointment_id=appointment.id) }}" 
+                               class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+.rating input {
+    display: none;
+}
+
+.rating label {
+    cursor: pointer;
+    font-size: 2em;
+    color: #ddd;
+    padding: 0 0.1em;
+}
+
+.rating input:checked ~ label,
+.rating label:hover,
+.rating label:hover ~ label {
+    color: #ffc107;
+}
+
+.rating label:hover i:before,
+.rating label:hover ~ label i:before {
+    content: "\f005";
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const labels = document.querySelectorAll('.rating label');
+    
+    labels.forEach(label => {
+        label.addEventListener('mouseover', function() {
+            this.style.color = '#ffc107';
+        });
+        
+        label.addEventListener('mouseout', function() {
+            const checkedInput = document.querySelector('.rating input:checked');
+            if (checkedInput) {
+                const checkedLabel = document.querySelector(`label[for="${checkedInput.id}"]`);
+                checkedLabel.style.color = '#ffc107';
+            } else {
+                this.style.color = '#ddd';
+            }
+        });
+    });
+});
+</script>
+{% endblock %} 

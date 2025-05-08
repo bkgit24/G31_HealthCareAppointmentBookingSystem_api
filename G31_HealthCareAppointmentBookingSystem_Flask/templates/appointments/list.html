@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block title %}My Appointments - DocCure{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Filter Section -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" action="{{ url_for('appointments_list') }}" class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select name="status" id="status" class="form-control">
+                            <option value="">All Status</option>
+                            <option value="pending" {% if request.args.get('status') == 'pending' %}selected{% endif %}>Pending</option>
+                            <option value="confirmed" {% if request.args.get('status') == 'confirmed' %}selected{% endif %}>Confirmed</option>
+                            <option value="completed" {% if request.args.get('status') == 'completed' %}selected{% endif %}>Completed</option>
+                            <option value="cancelled" {% if request.args.get('status') == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" class="form-control" id="date" name="date" 
+                               value="{{ request.args.get('date', '') }}">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <button type="submit" class="btn btn-primary btn-block">Filter</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Appointments List -->
+    <div class="card">
+        <div class="card-header">
+            <h4>My Appointments</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Doctor</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Reason</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in appointments %}
+                            <tr>
+                                <td>
+                                    <a href="{{ url_for('doctor_detail', doctor_id=appointment.doctor.id) }}">
+                                        Dr. {{ appointment.doctor.name }}
+                                    </a>
+                                </td>
+                                <td>{{ appointment.appointment_date.strftime('%B %d, %Y') }}</td>
+                                <td>{{ appointment.time_slot }}</td>
+                                <td>{{ appointment.illness }}</td>
+                                <td>
+                                    <span class="badge badge-{{ appointment.status }}">
+                                        {{ appointment.status|title }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="{{ url_for('appointment_detail', appointment_id=appointment.id) }}" 
+                                           class="btn btn-sm btn-info">View</a>
+                                        
+                                        {% if appointment.status in ['pending', 'confirmed'] %}
+                                            <a href="{{ url_for('cancel_appointment', appointment_id=appointment.id) }}" 
+                                               class="btn btn-sm btn-danger"
+                                               onclick="return confirm('Are you sure you want to cancel this appointment?')">
+                                                Cancel
+                                            </a>
+                                            <a href="{{ url_for('reschedule_appointment', appointment_id=appointment.id) }}" 
+                                               class="btn btn-sm btn-warning">
+                                                Reschedule
+                                            </a>
+                                        {% endif %}
+                                        
+                                        {% if appointment.status == 'completed' %}
+                                            <a href="{{ url_for('add_review', appointment_id=appointment.id) }}" 
+                                               class="btn btn-sm btn-success">
+                                                Review
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6" class="text-center">No appointments found.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            {% if pagination.pages > 1 %}
+                <nav aria-label="Page navigation" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        {% if pagination.has_prev %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('appointments_list', page=pagination.prev_num, **request.args) }}">
+                                    Previous
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">Previous</span>
+                            </li>
+                        {% endif %}
+
+                        {% for page in pagination.iter_pages() %}
+                            {% if page %}
+                                <li class="page-item {% if page == pagination.page %}active{% endif %}">
+                                    <a class="page-link" href="{{ url_for('appointments_list', page=page, **request.args) }}">
+                                        {{ page }}
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <span class="page-link">...</span>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if pagination.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('appointments_list', page=pagination.next_num, **request.args) }}">
+                                    Next
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">Next</span>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+.badge {
+    padding: 0.5em 0.75em;
+    font-size: 0.85em;
+}
+
+.badge-pending {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.badge-confirmed {
+    background-color: #17a2b8;
+    color: #fff;
+}
+
+.badge-completed {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.badge-cancelled {
+    background-color: #dc3545;
+    color: #fff;
+}
+</style>
+{% endblock %} 

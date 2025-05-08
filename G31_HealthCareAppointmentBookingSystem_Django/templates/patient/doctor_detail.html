@@ -1,0 +1,169 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <!-- Doctor Profile -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-4">
+                        {% if doctor.profile_image %}
+                            <img src="{{ doctor.profile_image.url }}" alt="{{ doctor.name }}" class="rounded-circle me-4" width="120" height="120">
+                        {% else %}
+                            <img src="{% static 'assets/images/default-avatar.png' %}" alt="{{ doctor.name }}" class="rounded-circle me-4" width="120" height="120">
+                        {% endif %}
+                        <div>
+                            <h2 class="mb-1">Dr. {{ doctor.name }}</h2>
+                            <p class="text-muted mb-2">{{ doctor.specialty }}</p>
+                            <div class="d-flex align-items-center">
+                                <span class="badge bg-primary me-2">{{ doctor.experience }} years experience</span>
+                                <span class="badge bg-success">Available Today</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5 class="mb-3">About</h5>
+                            <p>{{ doctor.about }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="mb-3">Education</h5>
+                            <ul class="list-unstyled">
+                                {% for education in doctor.education.all %}
+                                    <li class="mb-2">
+                                        <i class="fas fa-graduation-cap text-primary me-2"></i>
+                                        {{ education.degree }} in {{ education.field }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="mb-3">Specializations</h5>
+                            <div class="d-flex flex-wrap gap-2">
+                                {% for specialization in doctor.specializations.all %}
+                                    <span class="badge bg-light text-dark">{{ specialization.name }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="mb-3">Languages</h5>
+                            <div class="d-flex flex-wrap gap-2">
+                                {% for language in doctor.languages.all %}
+                                    <span class="badge bg-light text-dark">{{ language.name }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reviews Section -->
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="mb-4">Patient Reviews</h5>
+                    {% for review in doctor.reviews.all %}
+                        <div class="border-bottom pb-3 mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="d-flex align-items-center">
+                                    {% if review.patient.profile_image %}
+                                        <img src="{{ review.patient.profile_image.url }}" alt="{{ review.patient.name }}" class="rounded-circle me-2" width="40" height="40">
+                                    {% else %}
+                                        <img src="{% static 'assets/images/default-avatar.png' %}" alt="{{ review.patient.name }}" class="rounded-circle me-2" width="40" height="40">
+                                    {% endif %}
+                                    <div>
+                                        <h6 class="mb-0">{{ review.patient.name }}</h6>
+                                        <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
+                                    </div>
+                                </div>
+                                <div class="text-warning">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= review.rating %}
+                                            <i class="fas fa-star"></i>
+                                        {% else %}
+                                            <i class="far fa-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <p class="mb-0">{{ review.comment }}</p>
+                        </div>
+                    {% empty %}
+                        <p class="text-muted">No reviews yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Section -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="mb-4">Book an Appointment</h5>
+                    <form method="get" action="{% url 'patient:book_appointment' doctor.id %}">
+                        <div class="mb-3">
+                            <label for="date" class="form-label">Select Date</label>
+                            <input type="date" name="date" id="date" class="form-control" min="{{ today|date:'Y-m-d' }}" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Check Availability</button>
+                    </form>
+
+                    <hr class="my-4">
+
+                    <div class="mb-4">
+                        <h6 class="mb-3">Consultation Fee</h6>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span>Initial Consultation</span>
+                            <span class="fw-bold">${{ doctor.consultation_fee }}</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h6 class="mb-3">Working Hours</h6>
+                        <ul class="list-unstyled">
+                            {% for schedule in doctor.schedules.all %}
+                                <li class="d-flex justify-content-between mb-2">
+                                    <span>{{ schedule.get_day_display }}</span>
+                                    <span>{{ schedule.start_time|time:"g:i A" }} - {{ schedule.end_time|time:"g:i A" }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="mb-4">
+                        <h6 class="mb-3">Location</h6>
+                        <p class="mb-0">
+                            <i class="fas fa-map-marker-alt text-primary me-2"></i>
+                            {{ doctor.address }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border: none;
+        transition: transform 0.2s ease-in-out;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+    }
+    .badge {
+        padding: 0.5em 1em;
+    }
+    .btn {
+        transition: all 0.2s ease-in-out;
+    }
+    .btn:hover {
+        transform: translateY(-2px);
+    }
+</style>
+{% endblock content %} 

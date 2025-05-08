@@ -1,0 +1,49 @@
+{% extends 'partials/base.html' %} {% block content %}
+<section class="pt-5 pb-5">
+    <div class="container">
+        <div class="row mt-0 mt-md-4">
+            {% include 'doctor/sidebar.html' %}
+
+            <div class="col-lg-9 col-md-8 col-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="mb-0 fw-bold">Notifications</h4>
+                    {% if notifications %}
+                        <a href="{% url 'doctor:clear_notifications' %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to clear all notifications?')">
+                            Clear All <i class="fas fa-trash ms-1"></i>
+                        </a>
+                    {% endif %}
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for n in notifications %}
+                        <li class="list-group-item p-3 shadow rounded-3 mb-3 {% if not n.seen %}border-start border-4 border-primary{% endif %}">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <p class="mb-0 fs-5">{{n.type}}</p>
+                                    {% if not n.seen %}
+                                        <span class="badge bg-primary rounded-pill">New</span>
+                                    {% endif %}
+                                </div>
+                                <div class="text-end">
+                                    <p class="text-muted mb-1">
+                                        <small>{{n.date}}</small>
+                                    </p>
+                                    {% if not n.seen %}
+                                        <a href="{% url 'doctor:mark_noti_seen' n.id %}" class="btn btn-outline-secondary btn-sm">
+                                            Mark as Seen <i class="fas fa-check ms-1"></i>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item p-4 text-center">
+                            <p class="mb-0 text-muted">No notifications to display</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

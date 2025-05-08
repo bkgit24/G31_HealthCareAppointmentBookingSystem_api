@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}About Us - DocCure{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/about.css">
+    <link rel="icon" href="/static/images/logo.png" type="image/png">
+    
+   
+</head>
+<body class="bg-white">
+
+    {% extends 'base.html' %}
+
+    {% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-center mb-4">About DocCure</h1>
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title">Our Mission</h2>
+                        <p class="card-text">
+                            DocCure is dedicated to revolutionizing healthcare accessibility through our innovative appointment booking system. 
+                            We strive to connect patients with healthcare providers seamlessly, making quality healthcare more accessible to everyone.
+                        </p>
+
+                        <h2 class="card-title mt-4">What We Offer</h2>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Easy appointment scheduling with qualified doctors</li>
+                            <li class="list-group-item">Real-time availability checking</li>
+                            <li class="list-group-item">Secure patient-doctor communication</li>
+                            <li class="list-group-item">Comprehensive medical history management</li>
+                            <li class="list-group-item">Automated appointment reminders</li>
+                        </ul>
+
+                        <h2 class="card-title mt-4">Our Team</h2>
+                        <p class="card-text">
+                            Our team consists of healthcare professionals and technology experts working together to create 
+                            a seamless healthcare experience. We are committed to maintaining the highest standards of 
+                            security and privacy while providing an efficient platform for healthcare management.
+                        </p>
+
+                        <h2 class="card-title mt-4">Contact Us</h2>
+                        <p class="card-text">
+                            Have questions or feedback? We'd love to hear from you!<br>
+                            Email: support@doccure.com<br>
+                            Phone: (555) 123-4567
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+</body>
+<script src="/static/js/about.js">
+    </script>
+</html>
