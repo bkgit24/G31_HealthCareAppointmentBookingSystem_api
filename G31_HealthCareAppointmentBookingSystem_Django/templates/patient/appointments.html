@@ -1,185 +1,33 @@
-{% extends 'partials/base.html' %}
-{% load static %}
+{% extends 'partials/base.html' %} {% block content %}
 
-{% block content %}
-<div class="container py-5">
-    <!-- Filter Section -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
-            <form method="get" action="{% url 'patient:appointments' %}" class="row g-3">
-                <div class="col-md-4">
-                    <label for="status" class="form-label">Status</label>
-                    <select name="status" id="status" class="form-select">
-                        <option value="">All Status</option>
-                        <option value="pending" {% if request.GET.status == 'pending' %}selected{% endif %}>Pending</option>
-                        <option value="confirmed" {% if request.GET.status == 'confirmed' %}selected{% endif %}>Confirmed</option>
-                        <option value="completed" {% if request.GET.status == 'completed' %}selected{% endif %}>Completed</option>
-                        <option value="cancelled" {% if request.GET.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <label for="date" class="form-label">Date</label>
-                    <input type="date" name="date" id="date" class="form-control" value="{{ request.GET.date }}">
-                </div>
-                <div class="col-md-4 d-flex align-items-end">
-                    <button type="submit" class="btn btn-primary w-100">Filter</button>
-                </div>
-            </form>
-        </div>
-    </div>
+<section class="pt-5 pb-5">
+    <div class="container">
+        <div class="row mt-0 mt-md-4">
+            {% include 'patient/sidebar.html' %}
 
-    <!-- Appointments List -->
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Doctor</th>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>Reason</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for appointment in appointments %}
-                        <tr>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    {% if appointment.doctor.profile_image %}
-                                        <img src="{{ appointment.doctor.profile_image.url }}" alt="{{ appointment.doctor.name }}" class="rounded-circle me-2" width="40" height="40">
-                                    {% else %}
-                                        <img src="{% static 'assets/images/default-avatar.png' %}" alt="{{ appointment.doctor.name }}" class="rounded-circle me-2" width="40" height="40">
-                                    {% endif %}
-                                    <div>
-                                        <h6 class="mb-0">Dr. {{ appointment.doctor.name }}</h6>
-                                        <small class="text-muted">{{ appointment.doctor.specialty }}</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>{{ appointment.date|date:"M d, Y" }}</td>
-                            <td>{{ appointment.time_slot }}</td>
-                            <td>{{ appointment.reason|truncatechars:30 }}</td>
-                            <td>
-                                <span class="badge bg-{{ appointment.status }}">
-                                    {{ appointment.status|title }}
-                                </span>
-                            </td>
-                            <td>
-                                <div class="btn-group">
-                                    <a href="{% url 'patient:appointment_detail' appointment.id %}" class="btn btn-sm btn-info">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                    {% if appointment.status == 'pending' or appointment.status == 'confirmed' %}
-                                        <a href="{% url 'patient:cancel_appointment' appointment.id %}" class="btn btn-sm btn-danger">
-                                            <i class="fas fa-times"></i>
-                                        </a>
-                                        <a href="{% url 'patient:reschedule_appointment' appointment.id %}" class="btn btn-sm btn-warning">
-                                            <i class="fas fa-clock"></i>
-                                        </a>
-                                    {% endif %}
-                                </div>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="6" class="text-center py-4">
-                                <div class="text-muted">
-                                    <i class="fas fa-calendar-times fa-3x mb-3"></i>
-                                    <p class="mb-0">No appointments found.</p>
-                                </div>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+            <div class="col-lg-9 col-md-8 col-12">
+                <h4 class="mb-0 mb-4 fw-bold">Appointment</h4>
+                <div class="card mb-4">
+                    <!-- Single item -->
 
-            <!-- Pagination -->
-            {% if appointments.has_other_pages %}
-            <nav class="mt-4">
-                <ul class="pagination justify-content-center">
-                    {% if appointments.has_previous %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ appointments.previous_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.date %}&date={{ request.GET.date }}{% endif %}" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                    {% else %}
-                        <li class="page-item disabled">
-                            <span class="page-link">&laquo;</span>
-                        </li>
-                    {% endif %}
-
-                    {% for i in appointments.paginator.page_range %}
-                        {% if appointments.number == i %}
-                            <li class="page-item active">
-                                <span class="page-link">{{ i }}</span>
-                            </li>
-                        {% else %}
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ i }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.date %}&date={{ request.GET.date }}{% endif %}">{{ i }}</a>
-                            </li>
-                        {% endif %}
+                    {% for a in appointments %}
+                    <div class="shadow border p-3 mb-4 rounded-4">
+                        <a href="{% url 'patient:appointment_detail' a.appointment_id %}">
+                            <p><span class="fw-semibold text-dark">Appointment ID:</span> #{{a.appointment_id}}</p>
+                            <p><span class="fw-semibold text-dark">Service:</span> {{a.service.name}}</p>
+                            <p><span class="fw-semibold text-dark">Doctor:</span> {{a.doctor.full_name}}</p>
+                            <p><span class="fw-semibold text-dark">Issue:</span> {{a.issues}}</p>
+                            <p><span class="fw-semibold text-dark">Symptoms:</span> {{a.symptoms}}</p>
+                            <p><span class="fw-semibold text-dark">Status:</span> {{a.status}}</p>
+                            <p><span class="fw-semibold text-dark">Date:</span> {{a.appointment_date}}</p>
+                            <button class="btn btn-secondary btn-sm">View More <i class="fas fa-eye ms-2"></i></button>
+                        </a>
+                    </div>
                     {% endfor %}
-
-                    {% if appointments.has_next %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ appointments.next_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.date %}&date={{ request.GET.date }}{% endif %}" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    {% else %}
-                        <li class="page-item disabled">
-                            <span class="page-link">&raquo;</span>
-                        </li>
-                    {% endif %}
-                </ul>
-            </nav>
-            {% endif %}
+                </div>
+            </div>
         </div>
     </div>
-</div>
+</section>
 
-<style>
-    .card {
-        border: none;
-        transition: transform 0.2s ease-in-out;
-    }
-    .card:hover {
-        transform: translateY(-5px);
-    }
-    .btn {
-        transition: all 0.2s ease-in-out;
-    }
-    .btn:hover {
-        transform: translateY(-2px);
-    }
-    .badge {
-        padding: 0.5em 1em;
-    }
-    .badge.bg-pending {
-        background-color: #ffc107;
-        color: #000;
-    }
-    .badge.bg-confirmed {
-        background-color: #0dcaf0;
-        color: #000;
-    }
-    .badge.bg-completed {
-        background-color: #198754;
-    }
-    .badge.bg-cancelled {
-        background-color: #dc3545;
-    }
-    .pagination .page-link {
-        color: #0d6efd;
-    }
-    .pagination .page-item.active .page-link {
-        background-color: #0d6efd;
-        border-color: #0d6efd;
-    }
-</style>
 {% endblock content %}

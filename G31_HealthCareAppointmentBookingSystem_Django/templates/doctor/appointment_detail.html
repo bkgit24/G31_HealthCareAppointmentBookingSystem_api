@@ -5,19 +5,23 @@
             {% include 'doctor/sidebar.html' %}
 
             <div class="col-lg-9 col-md-8 col-12">
-                <h4 class="mb-0 mb-4 fw-bold">Appointment Detail #{{appointment.appointment_id}}</h4>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="mb-0 fw-bold">Appointment Detail #{{appointment.id}}</h4>
+                    <a href="{% url 'doctor:dashboard' %}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                    </a>
+                </div>
                 <div class="card mb-4">
                     <div class="shadow border p-3 mb-4 rounded-4">
                         <p>
                             <a>
-                                <p><span class="fw-semibold text-dark">Appointment ID:</span> #{{appointment.appointment_id}}</p>
+                                <p><span class="fw-semibold text-dark">Appointment ID:</span> #{{appointment.id}}</p>
                                 <p><span class="fw-semibold text-dark">Service:</span> {{appointment.service.name}}</p>
                                 <p><span class="fw-semibold text-dark">Patient:</span> {{appointment.patient.full_name}}</p>
                                 <p><span class="fw-semibold text-dark">Issue:</span> {{appointment.issues}}</p>
                                 <p><span class="fw-semibold text-dark">Symptoms:</span> {{appointment.symptoms}}</p>
                                 <p><span class="fw-semibold text-dark">Status:</span> {{appointment.status}}</p>
-                                <p><span class="fw-semibold text-dark">Date:</span> {{appointment.appointment_date|date:"F d, Y"}}</p>
-                                <p><span class="fw-semibold text-dark">Time:</span> {{appointment.appointment_date|date:"H:i"}}</p>
+                                <p><span class="fw-semibold text-dark">Date:</span> {{appointment.appointment_date}}</p>
                                 <p>
                                     <span class="fw-semibold text-dark">Action:</span>
 
@@ -87,7 +91,7 @@
                                 {% csrf_token %}
                                 <input type="text" class="form-control mb-3" name="test_name" placeholder="Test name" />
                                 <input type="text" class="form-control mb-3" name="description" placeholder="Description" />
-                                <textarea name="result" class="form-control" id="" placeholder="Lab Result"></textarea>
+                                <textarea name="result" class="form-control mb-3" placeholder="Lab Result"></textarea>
                                 <button type="submit" class="btn btn-secondary btn-sm">Save <i class="fas fa-save ms-2"></i></button>
                             </form>
                         </div>
@@ -96,9 +100,9 @@
                         <div class="border p-3 mb-4 rounded-4">
                             {% for l in lab_tests %}
                             <div class="shadow p-3 rounded-4 mb-3">
-                                <p><span class="fw-semibold text-dark">Test Name:</span> {{l.test_name}}t</p>
+                                <p><span class="fw-semibold text-dark">Test Name:</span> {{l.test_name}}</p>
                                 <p><span class="fw-semibold text-dark">Description:</span> {{l.description}}</p>
-                                <p><span class="fw-semibold text-dark">Result:</span> {{l.result|default:"Not added yet"}}</p>
+                                <p><span class="fw-semibold text-dark">Result:</span> {{ l.result|default:"Not added yet" }}</p>
                                 <button class="btn btn-dark btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLabTest{{l.id}}" aria-expanded="false" aria-controls="collapseLabTest{{l.id}}">Edit <i class="fas fa-edit ms-2"></i></button>
                                 <div class="collapse mt-3" id="collapseLabTest{{l.id}}">
                                     <div class="border p-3 rounded-4">
@@ -106,8 +110,7 @@
                                             {% csrf_token %}
                                             <input type="text" class="form-control mb-3" value="{{l.test_name}}" name="test_name" placeholder="Test name" />
                                             <input type="text" class="form-control mb-3" value="{{l.description}}" name="description" placeholder="Description" />
-                                            <textarea name="result" class="form-control" id="" placeholder="Lab Result">{{ l.result }}</textarea>
-
+                                            <textarea name="result" class="form-control mb-3" placeholder="Lab Result">{{ l.result }}</textarea>
                                             <button type="submit" class="btn btn-secondary btn-sm">Save Changes <i class="fas fa-save ms-2"></i></button>
                                         </form>
                                     </div>
@@ -138,8 +141,8 @@
                         {% for p in prescriptions %}
                         <div class="shadow p-3 rounded-4 mb-3">
                             <p><span class="fw-semibold text-dark">Medications:</span> {{p.medications}}</p>
-                            <button class="btn btn-dark btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePrescription1" aria-expanded="false" aria-controls="collapsePrescription1">Edit <i class="fas fa-edit ms-2"></i></button>
-                            <div class="collapse mt-3" id="collapsePrescription1">
+                            <button class="btn btn-dark btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePrescription{{p.id}}" aria-expanded="false" aria-controls="collapsePrescription{{p.id}}">Edit <i class="fas fa-edit ms-2"></i></button>
+                            <div class="collapse mt-3" id="collapsePrescription{{p.id}}">
                                 <div class="border p-3 rounded-4">
                                     <form action="{% url 'doctor:edit_prescription' appointment.appointment_id p.id %}" method="POST">
                                         {% csrf_token %}

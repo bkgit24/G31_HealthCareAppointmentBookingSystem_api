@@ -280,7 +280,7 @@
                         <h4 class="h5 mb-3 text-gradient">{{s.name}}</h4>
                         <p class="text-muted mb-4">{{s.description|truncatechars:80}}</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="h5 mb-0 text-gradient">${{s.cost}}</span>
+                            <span class="h5 mb-0 text-gradient">₹{{s.cost}}</span>
                             <a href="{% url 'base:service_detail' s.id %}" 
                                class="btn btn-gradient rounded-pill px-4 py-2 hover-lift">
                                 Book Now

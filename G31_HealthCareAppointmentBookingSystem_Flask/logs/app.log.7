@@ -1,14 +1,13 @@
-2025-05-07 07:14:28,885 ERROR: Server Error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application. [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:415]
-2025-05-07 11:21:21,065 INFO: Healthcare Appointment System startup [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:511]
-2025-05-07 11:21:21,551 INFO: Super admin user created successfully [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:562]
-2025-05-07 11:21:21,553 INFO: Database initialized and super admin user created [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:850]
-2025-05-07 12:15:05,733 ERROR: Page not found: http://localhost:5000/api/auth/register [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:406]
-2025-05-07 12:15:41,423 ERROR: Page not found: http://localhost:5000/api/auth/register [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:406]
-2025-05-07 12:16:09,483 ERROR: Page not found: http://localhost:5000/api/auth/register [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:406]
-2025-05-07 12:17:13,968 INFO: Healthcare Appointment System startup [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:511]
-2025-05-07 12:17:14,461 INFO: Super admin user created successfully [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:562]
-2025-05-07 12:17:14,461 INFO: Database initialized and super admin user created [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:850]
-2025-05-07 12:17:18,212 ERROR: Exception on / [GET] [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py:825]
+2025-05-07 17:05:27,534 ERROR: Exception on /api/sync-user [POST] [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py:825]
+Traceback (most recent call last):
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\sqlalchemy\engine\default.py", line 942, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: database is locked
+
+The above exception was the direct cause of the following exception:
+
 Traceback (most recent call last):
   File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py", line 1455, in wsgi_app
     response = self.full_dispatch_request()
@@ -28,51 +27,68 @@ Traceback (most recent call last):
   File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py", line 445, in landing
-    # Only patient, doctor, or admin can delete the appointment
-       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\templating.py", line 152, in render_template
-    return _render(app, template, context)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\templating.py", line 133, in _render
-    rv = template.render(context)
-         ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
-    self.environment.handle_exception()
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
-    raise rewrite_traceback_stack(source=source)
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\templates\index.html", line 18, in top-level template code
-    {% extends 'base.html' %}
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\templates\base.html", line 33, in top-level template code
-    <li><a href="{{url_for('about')}}">About</a></li>
-    ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py", line 1071, in url_for
-    return self.handle_url_build_error(error, endpoint, values)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py", line 1060, in url_for
-    rv = url_adapter.build(  # type: ignore[union-attr]
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\werkzeug\routing\map.py", line 919, in build
-    raise BuildError(endpoint, values, method, self)
-werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'about'. Did you mean 'logout' instead?
-2025-05-07 12:17:18,228 ERROR: Server Error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application. [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:415]
-2025-05-07 12:17:34,334 ERROR: Page not found: http://localhost:5000/api/auth/register [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:406]
-2025-05-07 12:18:35,484 ERROR: Page not found: http://localhost:5000/api/auth/register [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:406]
-2025-05-07 12:37:38,667 ERROR: Page not found: http://localhost:5000/api/auth/login [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:406]
-2025-05-07 12:37:54,758 ERROR: Page not found: http://localhost:5000/api/auth/login [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:406]
-2025-05-07 12:43:59,407 ERROR: Page not found: http://localhost:5000/api/health [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:406]
-2025-05-07 12:45:46,297 ERROR: Page not found: http://localhost:5000/api/health [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:406]
-2025-05-07 12:46:08,865 ERROR: Page not found: http://localhost:5000/api/doctors [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:406]
-2025-05-07 12:46:56,588 ERROR: Page not found: http://localhost:5000/api/health [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:406]
-2025-05-07 12:47:16,001 ERROR: Page not found: http://127.0.0.1:5000/api/doctors [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:406]
-2025-05-07 12:47:20,461 ERROR: Page not found: http://127.0.0.1:5000/api/doctors [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:406]
-2025-05-07 12:47:36,925 ERROR: Page not found: http://localhost:5000/api/health [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:406]
-2025-05-07 12:48:10,896 ERROR: Page not found: http://localhost:5000/api/health [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:406]
-2025-05-07 12:48:49,541 ERROR: Page not found: http://localhost:5000/api/health [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:406]
-2025-05-07 12:48:58,854 INFO: Healthcare Appointment System startup [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:529]
-2025-05-07 12:48:58,862 INFO: Super admin user already exists [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:874]
-2025-05-07 12:49:02,600 ERROR: Page not found: http://127.0.0.1:5000/api/doctors [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:406]
-2025-05-07 12:49:08,273 ERROR: Page not found: http://127.0.0.1:5000/api/doctors [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:406]
-2025-05-07 12:49:09,458 ERROR: Page not found: http://127.0.0.1:5000/api/doctors [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:406]
-2025-05-07 12:49:21,948 INFO: Healthcare Appointment System startup [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:529]
-2025-05-07 12:49:21,967 INFO: Super admin user already exists [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:874]
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py", line 911, in sync_user
+    db.session.commit()
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\sqlalchemy\orm\scoping.py", line 599, in commit
+    return self._proxied.commit()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2032, in commit
+    trans.commit(_to_root=True)
+  File "<string>", line 2, in commit
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1313, in commit
+    self._prepare_impl()
+  File "<string>", line 2, in _prepare_impl
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1288, in _prepare_impl
+    self.session.flush()
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4353, in flush
+    self._flush(objects)
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4488, in _flush
+    with util.safe_reraise():
+         ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4449, in _flush
+    flush_context.execute()
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
+    return meth(
+           ^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 515, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\sqlalchemy\engine\default.py", line 942, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) database is locked
+[SQL: INSERT INTO users (full_name, email, password_hash, role, profile_image, phone, address, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)]
+[parameters: ('Arjun Thakur', 'doc1@doccure.com', b'$2b$12$RKdlF9y5U77iyoxXUZu4deg/HrRAgfIPRC13jvzpwObs0JBXMHJWy', 'patient', None, None, None, '2025-05-07 11:35:22.001545')]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-05-07 17:05:27,562 ERROR: Server Error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application. [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:576]
+2025-05-07 17:08:50,977 INFO: Healthcare Appointment System startup [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:545]
+2025-05-07 17:08:51,231 INFO: Super admin user created successfully [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:596]
+2025-05-07 17:08:51,232 INFO: Super admin user created [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:952]

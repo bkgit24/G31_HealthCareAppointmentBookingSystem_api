@@ -421,6 +421,8 @@
         </div>
         {% endfor %} {% block content %} {% endblock content %}
 
+        {% block extra_js %}{% endblock %}
+
         {% if request.resolver_match.url_name == 'index' %}
         <!-- Footer -->
         <footer class="bg-white pt-5">

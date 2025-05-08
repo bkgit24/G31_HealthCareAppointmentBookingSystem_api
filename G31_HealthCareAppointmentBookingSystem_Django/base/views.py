@@ -6,16 +6,20 @@ from django.urls import reverse
 from django.http import JsonResponse
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.utils import timezone
 from decimal import Decimal
+from django.contrib import messages
 
 import requests
 import stripe
+import time
 
 from base import models as base_models
 from doctor import models as doctor_models
 from patient import models as patient_models
+from base.api_service import APIService
+from base.model_mappings import translate_django_to_flask
 
 def index(request):
     services = base_models.Service.objects.all()
@@ -29,57 +33,136 @@ def service_detail(request, service_id):
 
 @login_required
 def book_appointment(request, service_id, doctor_id):
+    # Always generate time_slots first
+    time_slots = {}
+    start_time = datetime.strptime("09:00", "%H:%M")
+    end_time = datetime.strptime("18:00", "%H:%M")
+    slot_length = timedelta(minutes=30)
+    while start_time < end_time:
+        slot_start = start_time.strftime("%H:%M")
+        slot_end = (start_time + slot_length).strftime("%H:%M")
+        value = f"{slot_start}-{slot_end}"
+        label = f"{start_time.strftime('%I:%M %p')} - {(start_time + slot_length).strftime('%I:%M %p')}"
+        time_slots[value] = label
+        start_time += slot_length
+
     try:
         service = base_models.Service.objects.get(id=service_id)
         doctor = doctor_models.Doctor.objects.get(id=doctor_id)
         patient = patient_models.Patient.objects.get(user=request.user)
 
-        time_slots = [f"{hour:02d}:00 - {hour+1:02d}:00" for hour in range(9, 18)]
-
         if request.method == "POST":
-            full_name = request.POST.get("full_name")
-            email = request.POST.get("email")
-            mobile = request.POST.get("mobile")
-            gender = request.POST.get("gender")
-            address = request.POST.get("address")
-            dob = request.POST.get("dob")
-            issues = request.POST.get("issues")
-            symptoms = request.POST.get("symptoms")
-            appointment_date = request.POST.get("appointment_date")
-            time_slot = request.POST.get("time_slot")
+            print("DEBUG POST DATA:", request.POST)
+            try:
+                # Get JWT token from session
+                jwt_token = request.session.get('jwt_token')
+                if not jwt_token:
+                    messages.error(request, "Authentication required")
+                    return redirect('userauths:sign-in')
 
-            start_time = time_slot.split(" - ")[0]
-            appointment_datetime = f"{appointment_date} {start_time}"
-            
-            patient.full_name = full_name
-            patient.email = email
-            patient.mobile = mobile
-            patient.gender = gender
-            patient.address = address
-            if dob:
-                patient.dob = datetime.strptime(dob, '%Y-%m-%d').date()
-            patient.save()
+                # Prepare data for Flask API
+                flask_appointment_data = {
+                    'doctor_id': doctor.id,
+                    'appointment_date': request.POST.get('appointment_date'),
+                    'time_slot': request.POST.get('time_slot'),
+                    'illness': request.POST.get('illness'),
+                    'first_name': request.POST.get('first_name'),
+                    'last_name': request.POST.get('last_name'),
+                    'contact': request.POST.get('contact'),
+                    'age': request.POST.get('age'),
+                    'gender': request.POST.get('gender')
+                }
 
-            appointment = base_models.Appointment.objects.create(
-                service=service,
-                doctor=doctor,
-                patient=patient,
-                appointment_date=appointment_datetime,
-                issues=issues,
-                symptoms=symptoms,
-                status="Scheduled"
-            )
+                # Validate required fields
+                required_fields = ['doctor_id', 'appointment_date', 'time_slot', 'illness', 
+                                 'first_name', 'last_name', 'contact', 'age', 'gender']
+                missing_fields = [field for field in required_fields if not flask_appointment_data.get(field)]
+                
+                if missing_fields:
+                    messages.error(request, f"Missing required fields: {', '.join(missing_fields)}")
+                    context = {
+                        "error": f"Missing required fields: {', '.join(missing_fields)}",
+                        "service": service,
+                        "doctor": doctor,
+                        "patient": patient,
+                        "time_slots": time_slots,
+                        "today": datetime.now().date(),
+                        "post_data": request.POST,
+                    }
+                    return render(request, "base/book_appointment.html", context)
 
-            billing = base_models.Billing.objects.create(
-                patient=patient,
-                appointment=appointment,
-                sub_total=appointment.service.cost,
-                tax=appointment.service.cost * Decimal('0.05'),
-                total=appointment.service.cost * Decimal('1.05'),
-                status="Unpaid"
-            )
+                # Update patient information
+                patient.full_name = f"{flask_appointment_data['first_name']} {flask_appointment_data['last_name']}"
+                patient.email = request.POST.get('email')
+                patient.mobile = flask_appointment_data['contact']
+                patient.gender = flask_appointment_data['gender']
+                patient.address = request.POST.get('address')
+                patient.save()
 
-            return redirect("base:checkout", billing.billing_id)
+                # Create appointment in Django
+                appointment_datetime = f"{flask_appointment_data['appointment_date']} {flask_appointment_data['time_slot'].split('-')[0].strip()}"
+                appointment = base_models.Appointment.objects.create(
+                    service=service,
+                    doctor=doctor,
+                    patient=patient,
+                    appointment_date=appointment_datetime,
+                    issues=flask_appointment_data['illness'],
+                    symptoms=request.POST.get('symptoms'),
+                    status="Scheduled"
+                )
+
+                # Send to Flask API with retries
+                max_retries = 3
+                retry_count = 0
+                last_error = None
+
+                while retry_count < max_retries:
+                    flask_response = APIService.create_appointment(flask_appointment_data, jwt_token)
+                    
+                    if 'error' not in flask_response:
+                        break
+                        
+                    last_error = flask_response['error']
+                    retry_count += 1
+                    
+                    if 'database is locked' in last_error.lower():
+                        # Wait before retrying
+                        time.sleep(0.5 * retry_count)
+                        continue
+                    else:
+                        # For other errors, don't retry
+                        break
+
+                if 'error' in flask_response:
+                    print(f"Flask API error after {retry_count} retries: {last_error}")
+                    messages.error(request, f"Failed to sync with API: {last_error}")
+                    return redirect('base:book_appointment', service_id=service.id, doctor_id=doctor.id)
+
+                # Create billing
+                billing = base_models.Billing.objects.create(
+                    patient=patient,
+                    appointment=appointment,
+                    sub_total=appointment.service.cost,
+                    tax=appointment.service.cost * Decimal('0.05'),
+                    total=appointment.service.cost * Decimal('1.05'),
+                    status="Unpaid"
+                )
+
+                messages.success(request, "Appointment booked successfully!")
+                return redirect(reverse("base:checkout", args=[billing.billing_id]))
+
+            except Exception as post_e:
+                print(f"Error in POST: {str(post_e)}")
+                context = {
+                    "error": f"POST ERROR: {str(post_e)}",
+                    "service": service,
+                    "doctor": doctor,
+                    "patient": patient,
+                    "time_slots": time_slots,
+                    "today": datetime.now().date(),
+                    "post_data": request.POST,
+                }
+                return render(request, "base/book_appointment.html", context)
 
         context = {
             "service": service,
@@ -90,7 +173,15 @@ def book_appointment(request, service_id, doctor_id):
         }
         return render(request, "base/book_appointment.html", context)
     except Exception as e:
-        return redirect('base:index')
+        print(f"Error in view: {str(e)}")
+        context = {
+            "error": str(e),
+            "service": service if 'service' in locals() else None,
+            "doctor": doctor if 'doctor' in locals() else None,
+            "patient": patient if 'patient' in locals() else None,
+            "time_slots": time_slots,
+        }
+        return render(request, "base/book_appointment.html", context)
 
 @login_required
 def checkout(request, billing_id):
@@ -99,11 +190,10 @@ def checkout(request, billing_id):
         context = {
             "billing": billing,
             "stripe_public_key": settings.STRIPE_PUBLIC_KEY,
-            "paypal_client_id": settings.PAYPAL_CLIENT_ID,
         }
         return render(request, "base/checkout.html", context)
     except Exception as e:
-        return redirect('index')
+        return redirect('base:index')
 
 @csrf_exempt
 def stripe_payment(request, billing_id):
@@ -265,7 +355,7 @@ def testimonials(request):
     return render(request, "base/testimonials.html")
 
 def about(request):
-    return render(request, "base/about.html")
+    return render(request, "base/pages/about.html")
 
 @login_required
 def test_payment_verify(request, billing_id):

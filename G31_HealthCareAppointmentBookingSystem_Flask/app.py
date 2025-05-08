@@ -1,12 +1,11 @@
-# Standard library imports
 import os
 import logging
 from datetime import timedelta, datetime
 from logging.handlers import RotatingFileHandler
 from functools import wraps
 from random import choice
+import time
 
-# Third-party imports
 from flask import Flask, jsonify, request, render_template, redirect, url_for, flash
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
@@ -16,12 +15,10 @@ from flask_login import LoginManager, UserMixin, login_user, logout_user, login_
 from flask_bcrypt import Bcrypt
 from werkzeug.utils import secure_filename
 
-# Configuration
 basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 
-# Flask configuration
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(basedir, "doccure.db")
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(basedir, "doccure.db") + "?timeout=30"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY', 'your-secret-key-here')
 app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY', 'your-jwt-secret-key')
@@ -29,16 +26,14 @@ app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
 app.config['JWT_TOKEN_LOCATION'] = ['headers']
 app.config['JWT_HEADER_NAME'] = 'Authorization'
 app.config['JWT_HEADER_TYPE'] = 'Bearer'
-app.config['JWT_COOKIE_SECURE'] = False  # Set to True in production with HTTPS
+app.config['JWT_COOKIE_SECURE'] = False
 app.config['JWT_COOKIE_CSRF_PROTECT'] = True
 
-# File upload configuration
 UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
-# Initialize extensions
 db = SQLAlchemy(app)
 jwt = JWTManager(app)
 bcrypt = Bcrypt(app)
@@ -47,7 +42,6 @@ login_manager.init_app(app)
 login_manager.login_view = "login"
 api = Api(app)
 
-# Update CORS configuration for Django frontend
 CORS(app, 
      supports_credentials=True, 
      resources={r"/api/*": {
@@ -57,10 +51,8 @@ CORS(app,
          "expose_headers": ["Content-Type", "Authorization"]
      }})
 
-# Create upload folder
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# Models
 class Admin(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     full_name = db.Column(db.String(80), nullable=False)
@@ -205,7 +197,6 @@ class Appointment(db.Model):
             'follow_up_date': self.follow_up_date.strftime('%Y-%m-%d') if self.follow_up_date else None
         }
 
-# API Resources
 class LoginResource(Resource):
     def post(self):
         try:
@@ -213,7 +204,6 @@ class LoginResource(Resource):
             if not data:
                 return {'status': 'error', 'message': 'No data provided'}, 400
 
-            # Validate required fields
             required_fields = ['email', 'password']
             missing_fields = [field for field in required_fields if field not in data]
             if missing_fields:
@@ -222,14 +212,11 @@ class LoginResource(Resource):
             email = data.get('email')
             password = data.get('password')
             
-            # First try to find user as admin
             user = Admin.query.filter_by(email=email).first()
             
-            # If not found as admin, check if they're a doctor
             if not user:
                 user = Doctor.query.filter_by(email=email).first()
             
-            # If still not found, check if they're a patient
             if not user:
                 user = User.query.filter_by(email=email).first()
 
@@ -255,34 +242,30 @@ class RegisterResource(Resource):
             if not data:
                 return {'status': 'error', 'message': 'No data provided'}, 400
 
-            # Validate required fields
             required_fields = ['email', 'password', 'full_name']
             missing_fields = [field for field in required_fields if field not in data]
             if missing_fields:
                 return {'status': 'error', 'message': f'Missing required fields: {", ".join(missing_fields)}'}, 400
 
-            # Extract and validate data
             email = data.get('email')
             password = data.get('password')
             full_name = data.get('full_name')
+            role = data.get('role', 'patient').lower()
 
-            # Check if email already exists in any user type
             if User.query.filter_by(email=email).first() or \
                Doctor.query.filter_by(email=email).first() or \
                Admin.query.filter_by(email=email).first():
                 return {'status': 'error', 'message': 'Email already exists'}, 400
 
-            # Create new user (patient by default)
             user = User(
                 full_name=full_name,
                 email=email,
-                role="patient"
+                role=role
             )
             user.set_password(password)
             db.session.add(user)
             db.session.commit()
             
-            # Generate token for immediate login
             access_token = create_access_token(identity=str(user.id))
             
             return {
@@ -299,13 +282,11 @@ class RegisterResource(Resource):
 
 class DoctorsListResource(Resource):
     def get(self):
-        # Support basic filtering
         specialization = request.args.get('specialization')
         city = request.args.get('city')
         
         query = Doctor.query
         
-        # Apply filters if provided
         if specialization:
             query = query.filter(Doctor.specialization == specialization)
         if city:
@@ -328,10 +309,9 @@ class AppointmentsListResource(Resource):
         if not user:
             user = Doctor.query.get(user_id)
             
-        # Return appointments based on user role
         if user and user.role == 'doctor':
             appointments = Appointment.query.filter_by(doctor_id=user.id).all()
-        else:  # Default to patient
+        else:
             appointments = Appointment.query.filter_by(patient_id=user_id).all()
             
         return {
@@ -345,60 +325,67 @@ class AppointmentsListResource(Resource):
         if not data:
             return {'status': 'error', 'message': 'No data provided'}, 400
         
-        # Validate required fields
         required_fields = ['doctor_id', 'appointment_date', 'time_slot', 'illness', 
                          'first_name', 'last_name', 'contact', 'age', 'gender']
         missing_fields = [field for field in required_fields if field not in data]
         if missing_fields:
             return {'status': 'error', 'message': f'Missing required fields: {", ".join(missing_fields)}'}, 400
         
-        try:
-            # Get patient ID from JWT token
-            patient_id = get_jwt_identity()
-            
-            # Convert date string to date object if needed
-            if isinstance(data.get('appointment_date'), str):
-                data['appointment_date'] = datetime.strptime(data['appointment_date'], '%Y-%m-%d').date()
-            
-            # Create appointment
-            appointment = Appointment(
-                patient_id=patient_id,
-                doctor_id=data['doctor_id'],
-                appointment_date=data['appointment_date'],
-                time_slot=data['time_slot'],
-                illness=data['illness'],
-                first_name=data['first_name'],
-                last_name=data['last_name'],
-                contact=data['contact'],
-                age=data['age'],
-                gender=data['gender'],
-                status='Confirmed'  # Default status
-            )
-            
-            db.session.add(appointment)
-            db.session.commit()
-            
-            return {'status': 'success', 'appointment': appointment.to_dict()}, 201
-            
-        except Exception as e:
-            db.session.rollback()
-            app.logger.error(f'Error creating appointment: {str(e)}')
-            return {'status': 'error', 'message': f'Error creating appointment: {str(e)}'}, 500
+        max_retries = 3
+        retry_count = 0
+        last_error = None
+        
+        while retry_count < max_retries:
+            try:
+                patient_id = get_jwt_identity()
+                
+                if isinstance(data.get('appointment_date'), str):
+                    data['appointment_date'] = datetime.strptime(data['appointment_date'], '%Y-%m-%d').date()
+                
+                appointment = Appointment(
+                    patient_id=patient_id,
+                    doctor_id=data['doctor_id'],
+                    appointment_date=data['appointment_date'],
+                    time_slot=data['time_slot'],
+                    illness=data['illness'],
+                    first_name=data['first_name'],
+                    last_name=data['last_name'],
+                    contact=data['contact'],
+                    age=data['age'],
+                    gender=data['gender'],
+                    status='Confirmed'
+                )
+                
+                db.session.add(appointment)
+                db.session.commit()
+                
+                return {'status': 'success', 'appointment': appointment.to_dict()}, 201
+                
+            except Exception as e:
+                db.session.rollback()
+                last_error = str(e)
+                retry_count += 1
+                
+                if 'database is locked' in str(e).lower():
+                    time.sleep(0.5 * retry_count)
+                    continue
+                else:
+                    break
+        
+        app.logger.error(f'Error creating appointment after {retry_count} retries: {last_error}')
+        return {'status': 'error', 'message': f'Error creating appointment: {last_error}'}, 500
 
 class AppointmentResource(Resource):
     @jwt_required()
     def get(self, appointment_id):
-        # Get the appointment
         appointment = Appointment.query.get_or_404(appointment_id)
         
-        # Check if user has permission to view this appointment
         user_id = get_jwt_identity()
         user = User.query.get(user_id)
         
         if not user:
             user = Doctor.query.get(user_id)
             
-        # Only patient, doctor, or admin can view the appointment
         if (user and (user.role == 'admin' or 
             (user.role == 'doctor' and user.id == appointment.doctor_id) or 
             (user.id == appointment.patient_id))):
@@ -408,35 +395,29 @@ class AppointmentResource(Resource):
 
     @jwt_required()
     def put(self, appointment_id):
-        # Get the appointment
         appointment = Appointment.query.get_or_404(appointment_id)
         
-        # Check permissions
         user_id = get_jwt_identity()
         user = User.query.get(user_id)
         if not user:
             user = Doctor.query.get(user_id)
             
-        # Only patient, doctor, or admin can update the appointment
         if not (user and (user.role == 'admin' or 
                 (user.role == 'doctor' and user.id == appointment.doctor_id) or 
                 (user.id == appointment.patient_id))):
             return {'status': 'error', 'message': 'Not authorized to update this appointment'}, 403
             
-        # Get and validate data
         data = request.get_json()
         if not data:
             return {'status': 'error', 'message': 'No data provided'}, 400
             
         try:
-            # Convert date string to date object if needed
             if 'appointment_date' in data and isinstance(data['appointment_date'], str):
                 data['appointment_date'] = datetime.strptime(data['appointment_date'], '%Y-%m-%d').date()
                 
             if 'follow_up_date' in data and data['follow_up_date'] and isinstance(data['follow_up_date'], str):
                 data['follow_up_date'] = datetime.strptime(data['follow_up_date'], '%Y-%m-%d').date()
                 
-            # Update fields
             for key, value in data.items():
                 if hasattr(appointment, key):
                     setattr(appointment, key, value)
@@ -451,16 +432,13 @@ class AppointmentResource(Resource):
 
     @jwt_required()
     def delete(self, appointment_id):
-        # Get the appointment
         appointment = Appointment.query.get_or_404(appointment_id)
         
-        # Check permissions
         user_id = get_jwt_identity()
         user = User.query.get(user_id)
         if not user:
             user = Doctor.query.get(user_id)
             
-        # Only patient, doctor, or admin can delete the appointment
         if not (user and (user.role == 'admin' or 
                 (user.role == 'doctor' and user.id == appointment.doctor_id) or 
                 (user.id == appointment.patient_id))):
@@ -480,7 +458,6 @@ class CurrentUserResource(Resource):
     def get(self):
         user_id = get_jwt_identity()
         
-        # Try to find user in all possible tables
         user = User.query.get(user_id)
         if not user:
             user = Doctor.query.get(user_id)
@@ -495,7 +472,6 @@ class CurrentUserResource(Resource):
 class HealthCheckResource(Resource):
     def get(self):
         try:
-            # Check database connection
             db.session.execute('SELECT 1')
             return {
                 'status': 'success',
@@ -510,7 +486,6 @@ class HealthCheckResource(Resource):
                 'database': 'disconnected'
             }, 500
 
-# User loader and decorators
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -533,7 +508,6 @@ def super_admin_required(func):
         return func(*args, **kwargs)
     return wrapper
 
-# Setup logging
 def setup_logging(app):
     if not os.path.exists('logs'):
         os.mkdir('logs')
@@ -546,7 +520,6 @@ def setup_logging(app):
     app.logger.setLevel(logging.INFO)
     app.logger.info('Healthcare Appointment System startup')
 
-# Error handlers
 @jwt.unauthorized_loader
 def unauthorized_callback(reason):
     app.logger.warning('Unauthorized access attempt')
@@ -557,30 +530,30 @@ def invalid_token_callback(reason):
     app.logger.warning('Invalid token attempt')
     return jsonify({'msg': 'Invalid token'}), 422
 
-@app.errorhandler(404)
-def not_found_error(error):
-    app.logger.error(f'Page not found: {request.url}')
-    return jsonify({
-        'error': 'Resource not found',
-        'status': 'error'
-    }), 404
+def register_error_handlers(app):
+    @app.errorhandler(404)
+    def not_found_error(error):
+        return render_template('errors/404.html'), 404
 
-@app.errorhandler(500)
-def internal_error(error):
-    db.session.rollback()
-    app.logger.error(f'Server Error: {error}')
-    return jsonify({
-        'error': 'Internal server error',
-        'status': 'error'
-    }), 500
+    @app.errorhandler(500)
+    def internal_error(error):
+        db.session.rollback()
+        return render_template('errors/500.html'), 500
 
-# Create super admin user
+    @app.errorhandler(403)
+    def forbidden_error(error):
+        return render_template('errors/403.html'), 403
+
+    @app.errorhandler(401)
+    def unauthorized_error(error):
+        return render_template('errors/401.html'), 401
+
 def create_super_admin():
     try:
         if not Admin.query.filter_by(is_super_admin=True).first():
             super_admin = Admin(
                 full_name='doccure',
-                email='admin@doccure.com',
+                email='admin@gmail.com',
                 is_admin=True,
                 is_super_admin=True,
                 role='super_admin'
@@ -595,7 +568,6 @@ def create_super_admin():
         app.logger.error(f'Error creating super admin user: {str(e)}')
         db.session.rollback()
 
-# Routes
 @app.route("/")
 def landing():
     return render_template("index.html")
@@ -610,14 +582,11 @@ def login():
         email = request.form.get("email")
         password = request.form.get("password")
         
-        # First try to find user as a patient
         user = User.query.filter_by(email=email).first()
         
-        # If not found as patient, check if they're a doctor
         if not user:
             user = Doctor.query.filter_by(email=email).first()
         
-        # If still not found, check if they're an admin
         if not user:
             user = Admin.query.filter_by(email=email).first()
 
@@ -645,7 +614,6 @@ def register():
             flash("Passwords do not match!", "danger")
             return redirect(url_for("register"))
         
-        # Check if email exists in any user type
         if User.query.filter_by(email=email).first() or \
            Doctor.query.filter_by(email=email).first() or \
            Admin.query.filter_by(email=email).first():
@@ -653,11 +621,10 @@ def register():
             return redirect(url_for("register"))
         
         try:
-            # Create new user as patient
             new_user = User(
-                full_name=name,  # Use the name from the form as full_name
+                full_name=name,
                 email=email,
-                role="patient"  # Explicitly set role as patient
+                role="patient"
             )
             new_user.set_password(password)
             db.session.add(new_user)
@@ -693,7 +660,6 @@ def appointments():
         appointments = Appointment.query.filter_by(patient_id=current_user.id).all()
     return render_template("appointments.html", appointments=appointments)
 
-# Add new route for admin to create doctor accounts
 @app.route("/admin/create-doctor", methods=["GET", "POST"])
 @login_required
 @admin_required
@@ -708,19 +674,16 @@ def create_doctor():
         city = request.form.get("city")
         fees = request.form.get("fees")
         
-        # Check if email exists in any user type
         if User.query.filter_by(email=email).first() or \
            Doctor.query.filter_by(email=email).first() or \
            Admin.query.filter_by(email=email).first():
             flash("Email already exists!", "danger")
             return redirect(url_for("create_doctor"))
         
-        # Check if doctor_id already exists
         if Doctor.query.filter_by(user_id=doctor_id).first():
             flash("Doctor ID already exists!", "danger")
             return redirect(url_for("create_doctor"))
         
-        # Create new doctor
         new_doctor = Doctor(
             full_name=name,
             email=email,
@@ -739,7 +702,6 @@ def create_doctor():
     
     return render_template("admin/create_doctor.html")
 
-# Add admin dashboard route
 @app.route("/admin/dashboard")
 @login_required
 @admin_required
@@ -748,7 +710,6 @@ def admin_dashboard():
     patients = User.query.filter_by(role="patient").all()
     return render_template("admin/dashboard.html", doctors=doctors, patients=patients)
 
-# Add super admin dashboard route
 @app.route("/super-admin/dashboard")
 @login_required
 @super_admin_required
@@ -761,7 +722,6 @@ def super_admin_dashboard():
                          doctors=doctors, 
                          patients=patients)
 
-# Add admin appointment management routes
 @app.route("/admin/appointments")
 @login_required
 @admin_required
@@ -793,7 +753,6 @@ def delete_appointment(appointment_id):
     flash("Appointment deleted successfully", "success")
     return redirect(url_for("admin_appointments"))
 
-# Add admin statistics route
 @app.route("/admin/statistics")
 @login_required
 @admin_required
@@ -803,7 +762,6 @@ def admin_statistics():
     total_appointments = Appointment.query.count()
     recent_appointments = Appointment.query.order_by(Appointment.created_at.desc()).limit(5).all()
     
-    # Get appointments by status
     confirmed_appointments = Appointment.query.filter_by(status="Confirmed").count()
     cancelled_appointments = Appointment.query.filter_by(status="Cancelled").count()
     completed_appointments = Appointment.query.filter_by(status="Completed").count()
@@ -817,7 +775,6 @@ def admin_statistics():
                          cancelled_appointments=cancelled_appointments,
                          completed_appointments=completed_appointments)
 
-# Add admin doctor management routes
 @app.route("/admin/doctors")
 @login_required
 @admin_required
@@ -836,7 +793,6 @@ def update_doctor_status(doctor_id):
     flash(f"Doctor is now {status}", "success")
     return redirect(url_for("admin_doctors"))
 
-# Add admin patient management routes
 @app.route("/admin/patients")
 @login_required
 @admin_required
@@ -864,23 +820,51 @@ def get_doctor_available_slots(doctor_id):
     except ValueError:
         return jsonify({'status': 'error', 'message': 'Invalid date format, should be YYYY-MM-DD'}), 400
 
-    # Define working hours (9:00 to 18:00)
     start_hour = 9
     end_hour = 18
     all_slots = [f"{hour:02d}:00 - {hour+1:02d}:00" for hour in range(start_hour, end_hour)]
 
-    # Get booked slots for the doctor on the given date
     booked_appointments = Appointment.query.filter_by(doctor_id=doctor_id, appointment_date=date_obj).all()
     booked_slots = set([appt.time_slot for appt in booked_appointments])
 
-    # Exclude booked slots
     available_slots = [slot for slot in all_slots if slot not in booked_slots]
 
     return jsonify({'status': 'success', 'slots': available_slots}), 200
 
-# API Routes
+@app.route("/book/<int:doctor_id>", methods=["GET", "POST"])
+@login_required
+def book_appointment(doctor_id):
+    doctor = Doctor.query.get_or_404(doctor_id)
+    if request.method == "POST":
+        appointment_date = request.form.get("appointment_date")
+        time_slot = request.form.get("time_slot")
+        illness = request.form.get("illness")
+        first_name = current_user.full_name.split()[0] if current_user.full_name else ""
+        last_name = " ".join(current_user.full_name.split()[1:]) if current_user.full_name and len(current_user.full_name.split()) > 1 else ""
+        contact = getattr(current_user, 'phone', '') or ""
+        age = getattr(current_user, 'age', 25) if hasattr(current_user, 'age') else 25
+        gender = getattr(current_user, 'gender', 'male') if hasattr(current_user, 'gender') else 'male'
+        appointment = Appointment(
+            doctor_id=doctor.id,
+            patient_id=current_user.id,
+            appointment_date=datetime.strptime(appointment_date, "%Y-%m-%d"),
+            time_slot=time_slot,
+            illness=illness,
+            first_name=first_name,
+            last_name=last_name,
+            contact=contact,
+            age=age,
+            gender=gender,
+            status="Confirmed"
+        )
+        db.session.add(appointment)
+        db.session.commit()
+        flash("Appointment booked successfully!", "success")
+        return redirect(url_for("landing"))
+    return render_template("doctors/detail.html", doctor=doctor)
+
 api.add_resource(LoginResource, '/api/login/')
-api.add_resource(RegisterResource, '/api/register/')
+api.add_resource(RegisterResource, '/api/register', '/api/register/')
 api.add_resource(DoctorsListResource, '/api/doctors/')
 api.add_resource(DoctorResource, '/api/doctors/<int:doctor_id>/')
 api.add_resource(AppointmentsListResource, '/api/appointments/')
@@ -888,27 +872,19 @@ api.add_resource(AppointmentResource, '/api/appointments/<int:appointment_id>/')
 api.add_resource(CurrentUserResource, '/api/me/')
 api.add_resource(HealthCheckResource, '/api/health/')
 
-# Initialize application
 if __name__ == '__main__':
-    # Setup logging
     setup_logging(app)
-    
-    # Register error handlers
     register_error_handlers(app)
     
-    # Create database tables and super admin user if they don't exist
     with app.app_context():
-        # Create tables if they don't exist
         db.create_all()
         
-        # Create super admin if none exists
         if not Admin.query.filter_by(is_super_admin=True).first():
             create_super_admin()
             app.logger.info('Super admin user created')
         else:
             app.logger.info('Super admin user already exists')
     
-    # Run the application
     app.run(
         host=os.environ.get('HOST', '0.0.0.0'),
         port=int(os.environ.get('PORT', 5000)),

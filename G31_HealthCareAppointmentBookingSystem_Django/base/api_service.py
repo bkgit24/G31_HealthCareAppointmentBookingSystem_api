@@ -158,19 +158,35 @@ class APIService:
             return {'error': f'Failed to get appointment: {str(e)}'}
 
     @staticmethod
-    def create_appointment(appointment_data, jwt_token=None):
-        url = f"{APIService.BASE_URL}/appointments/"
-        flask_appointment_data = translate_django_to_flask(appointment_data, 'appointment')
-        payload = json.dumps(flask_appointment_data)
+    def create_appointment(appointment_data, jwt_token):
+        """
+        Create an appointment in the Flask API
+        """
         try:
-            response = requests.post(url, data=payload, headers=APIService.get_headers(jwt_token), timeout=APIService.TIMEOUT)
-            data = APIService._handle_response(response)
-            if 'appointment' in data:
-                data['appointment'] = translate_flask_to_django(data['appointment'], 'appointment')
-            return data
+            headers = {
+                'Content-Type': 'application/json',
+                'Authorization': f'Bearer {jwt_token}'
+            }
+            
+            response = requests.post(
+                f"{APIService.BASE_URL}/appointments/",
+                json=appointment_data,
+                headers=headers
+            )
+            
+            if response.status_code == 201:
+                return response.json()
+            else:
+                error_message = response.json().get('message', 'Unknown error occurred')
+                print(f"API Error: {error_message}")
+                return {'error': error_message}
+                
         except requests.exceptions.RequestException as e:
-            logger.error(f"Create appointment request failed: {str(e)}")
-            return {'error': f'Failed to create appointment: {str(e)}'}
+            print(f"Request Error: {str(e)}")
+            return {'error': f"Failed to connect to API: {str(e)}"}
+        except Exception as e:
+            print(f"Unexpected Error: {str(e)}")
+            return {'error': f"An unexpected error occurred: {str(e)}"}
 
     @staticmethod
     def update_appointment(appointment_id, appointment_data, jwt_token=None):

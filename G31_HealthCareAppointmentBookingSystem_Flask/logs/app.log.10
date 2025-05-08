@@ -1,113 +1,116 @@
-2025-05-07 07:08:00,849 ERROR: Exception on /api/register [POST] [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py:825]
+2025-05-07 12:51:24,618 INFO: Healthcare Appointment System startup [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:529]
+2025-05-07 12:51:24,653 INFO: Super admin user already exists [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:874]
+2025-05-07 12:52:37,624 INFO: Healthcare Appointment System startup [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:529]
+2025-05-07 12:52:37,629 INFO: Super admin user already exists [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:874]
+2025-05-07 12:52:40,353 ERROR: Exception on / [GET] [in C:\Users\Bhavya\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py:825]
 Traceback (most recent call last):
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
-    rv = self.dispatch_request()
-         ^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask_restful\__init__.py", line 489, in wrapper
-    resp = resource(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\views.py", line 109, in view
-    return current_app.ensure_sync(self.dispatch_request)(**kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask_restful\__init__.py", line 604, in dispatch_request
-    resp = meth(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py", line 240, in post
-    email = data.get('email')
-                 ^^^^^^^^^^^^^
-KeyError: 'username'
-2025-05-07 07:13:40,810 ERROR: Exception on /api/register [POST] [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py:825]
-Traceback (most recent call last):
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
-    rv = self.dispatch_request()
-         ^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask_restful\__init__.py", line 489, in wrapper
-    resp = resource(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\views.py", line 109, in view
-    return current_app.ensure_sync(self.dispatch_request)(**kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask_restful\__init__.py", line 604, in dispatch_request
-    resp = meth(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py", line 240, in post
-    # Extract and validate data
-                 ^^^^^^^^^^^^^^^
-KeyError: 'username'
-2025-05-07 07:13:55,923 ERROR: Exception on /api/register [POST] [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py:825]
-Traceback (most recent call last):
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
-    rv = self.dispatch_request()
-         ^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask_restful\__init__.py", line 489, in wrapper
-    resp = resource(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\views.py", line 109, in view
-    return current_app.ensure_sync(self.dispatch_request)(**kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask_restful\__init__.py", line 604, in dispatch_request
-    resp = meth(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py", line 240, in post
-    # Extract and validate data
-                 ^^^^^^^^^^^^^^^
-KeyError: 'username'
-2025-05-07 07:14:24,319 INFO: Healthcare Appointment System startup [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:384]
-2025-05-07 07:14:24,719 INFO: Super admin user created successfully [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:435]
-2025-05-07 07:14:24,719 INFO: Database initialized and super admin user created [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:716]
-2025-05-07 07:14:28,856 ERROR: Exception on / [GET] [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py:825]
-Traceback (most recent call last):
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py", line 1455, in wsgi_app
+  File "C:\Users\Bhavya\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 1455, in wsgi_app
     response = self.full_dispatch_request()
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py", line 869, in full_dispatch_request
+  File "C:\Users\Bhavya\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 869, in full_dispatch_request
     rv = self.handle_user_exception(e)
          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+  File "C:\Users\Bhavya\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
     return cors_after_request(app.make_response(f(*args, **kwargs)))
                                                 ^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask_restful\__init__.py", line 298, in error_router
+  File "C:\Users\Bhavya\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask_restful\__init__.py", line 298, in error_router
     return original_handler(e)
            ^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+  File "C:\Users\Bhavya\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
     rv = self.dispatch_request()
          ^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+  File "C:\Users\Bhavya\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 852, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py", line 445, in landing
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py", line 590, in landing
     return render_template("index.html")
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\templating.py", line 152, in render_template
+  File "C:\Users\Bhavya\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\templating.py", line 152, in render_template
     return _render(app, template, context)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\templating.py", line 133, in _render
+  File "C:\Users\Bhavya\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\templating.py", line 133, in _render
     rv = template.render(context)
          ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+  File "C:\Users\Bhavya\AppData\Local\Programs\Python\Python312\Lib\site-packages\jinja2\environment.py", line 1295, in render
     self.environment.handle_exception()
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+  File "C:\Users\Bhavya\AppData\Local\Programs\Python\Python312\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
     raise rewrite_traceback_stack(source=source)
   File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\templates\index.html", line 18, in top-level template code
     {% extends 'base.html' %}
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\templates\base.html", line 33, in top-level template code
-    <li><a href="{{url_for('about')}}">About</a></li>
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\templates\base.html", line 34, in top-level template code
+    <li><a href="{{url_for('book_appointment')}}">Book Appointments</a></li>
     ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py", line 1071, in url_for
+  File "C:\Users\Bhavya\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 1071, in url_for
     return self.handle_url_build_error(error, endpoint, values)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py", line 1060, in url_for
+  File "C:\Users\Bhavya\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 1060, in url_for
     rv = url_adapter.build(  # type: ignore[union-attr]
          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\werkzeug\routing\map.py", line 919, in build
+  File "C:\Users\Bhavya\AppData\Local\Programs\Python\Python312\Lib\site-packages\werkzeug\routing\map.py", line 919, in build
     raise BuildError(endpoint, values, method, self)
-werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'about'. Did you mean 'logout' instead?
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'book_appointment'. Did you mean 'appointments' instead?
+2025-05-07 12:52:40,567 ERROR: Server Error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application. [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\app.py:560]
+2025-05-07 12:55:37,982 ERROR: Exception on /api/me [GET] [in C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py:825]
+Traceback (most recent call last):
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask_jwt_extended\jwt_manager.py", line 557, in _decode_jwt_from_config
+    return _decode_jwt(**kwargs, allow_expired=allow_expired)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask_jwt_extended\tokens.py", line 96, in _decode_jwt
+    decoded_token = jwt.decode(
+                    ^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\jwt\api_jwt.py", line 222, in decode
+    decoded = self.decode_complete(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\jwt\api_jwt.py", line 167, in decode_complete
+    self._validate_claims(
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\jwt\api_jwt.py", line 262, in _validate_claims
+    self._validate_exp(payload, now, leeway)
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\jwt\api_jwt.py", line 363, in _validate_exp
+    raise ExpiredSignatureError("Signature has expired")
+jwt.exceptions.ExpiredSignatureError: Signature has expired
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask_restful\__init__.py", line 489, in wrapper
+    resp = resource(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask\views.py", line 109, in view
+    return current_app.ensure_sync(self.dispatch_request)(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask_restful\__init__.py", line 604, in dispatch_request
+    resp = meth(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask_jwt_extended\view_decorators.py", line 167, in decorator
+    verify_jwt_in_request(
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask_jwt_extended\view_decorators.py", line 94, in verify_jwt_in_request
+    jwt_data, jwt_header, jwt_location = _decode_jwt_from_request(
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask_jwt_extended\view_decorators.py", line 340, in _decode_jwt_from_request
+    decoded_token = decode_token(encoded_token, csrf_token)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask_jwt_extended\utils.py", line 128, in decode_token
+    return jwt_manager._decode_jwt_from_config(encoded_token, csrf_value, allow_expired)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask_jwt_extended\jwt_manager.py", line 563, in _decode_jwt_from_config
+    e.jwt_data = _decode_jwt(**kwargs, allow_expired=True)  # type: ignore
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\flask_jwt_extended\tokens.py", line 96, in _decode_jwt
+    decoded_token = jwt.decode(
+                    ^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\jwt\api_jwt.py", line 222, in decode
+    decoded = self.decode_complete(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\jwt\api_jwt.py", line 167, in decode_complete
+    self._validate_claims(
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\jwt\api_jwt.py", line 273, in _validate_claims
+    self._validate_sub(payload, subject)
+  File "C:\Users\Bhavya\OneDrive\Desktop\Projects\G31_HealtchareAppointmentBookingSystem_repo\venv\Lib\site-packages\jwt\api_jwt.py", line 300, in _validate_sub
+    raise InvalidSubjectError("Subject must be a string")
+jwt.exceptions.InvalidSubjectError: Subject must be a string

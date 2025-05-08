@@ -60,7 +60,7 @@
                             <strong>Specialization:</strong> {{ doctor.specialization }}<br>
                             <strong>Experience:</strong> {{ doctor.experience }} years<br>
                             <strong>City:</strong> {{ doctor.city }}<br>
-                            <strong>Fees:</strong> ${{ "%.2f"|format(doctor.fees) }}
+                            <strong>Fees:</strong> ₹{{ "%.2f"|format(doctor.fees) }}
                         </p>
                         <div class="d-flex justify-content-between">
                             <a href="{{ url_for('doctor_detail', doctor_id=doctor.id) }}" class="btn btn-info">View Profile</a>

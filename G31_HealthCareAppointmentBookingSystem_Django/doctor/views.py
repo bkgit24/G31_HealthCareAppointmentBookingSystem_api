@@ -7,6 +7,7 @@ from base.models import MedicalRecord, LabTest, Prescription, Notification
 
 from doctor import models as doctor_models
 from base import models as base_models
+from django.db import models
 
 def get_notifications(request):
     if request.user.is_authenticated and hasattr(request.user, 'doctor'):
@@ -20,26 +21,28 @@ def get_notifications(request):
 
 @login_required
 def dashboard(request):
-    token = request.session.get('jwt_token')
-    if not token:
-        messages.error(request, 'Please login to access the dashboard.')
-        return redirect('login')
-    
-    # Get appointments from API
-    response = APIService.get_appointments(token)
-    if response.get('success'):
-        appointments = response['appointments']
-    else:
-        appointments = []
-        messages.error(request, response.get('message', 'Failed to load appointments.'))
-    
-    # Get local notifications
-    notifications = Notification.objects.filter(user=request.user, is_read=False)
-    
-    return render(request, 'doctor/dashboard.html', {
-        'appointments': appointments,
-        'notifications': notifications
-    })
+    try:
+        doctor = doctor_models.Doctor.objects.get(user=request.user)
+    except doctor_models.Doctor.DoesNotExist:
+        messages.warning(request, "Please complete your profile setup by confirming your role.")
+        return redirect('userauths:select-role')
+
+    appointments = base_models.Appointment.objects.filter(doctor=doctor).order_by("-id")
+    notifications = doctor_models.Notification.objects.filter(doctor=doctor, seen=False).order_by("-id")
+
+    total_earnings = base_models.Billing.objects.filter(
+        appointment__doctor=doctor,
+        status='Paid'
+    ).aggregate(total=models.Sum('total'))['total'] or 0
+
+    context = {
+        "appointments": appointments[:5],
+        "notifications": notifications[:5],
+        "total_earnings": total_earnings,
+        "doctor": doctor,
+        "today": datetime.now().date(),
+    }
+    return render(request, "doctor/dashboard.html", context)
 
 @login_required
 def appointments(request):
@@ -62,24 +65,18 @@ def appointments(request):
 
 @login_required
 def appointment_detail(request, appointment_id):
-    token = request.session.get('jwt_token')
-    if not token:
-        messages.error(request, 'Please login to view appointment details.')
-        return redirect('login')
-    
-    # Get appointment details from API
-    response = APIService.get_appointment(appointment_id, token)
-    if response.get('success'):
-        appointment = response['appointment']
-    else:
-        messages.error(request, response.get('message', 'Failed to load appointment details.'))
-        return redirect('dashboard')
-    
+    try:
+        doctor = doctor_models.Doctor.objects.get(user=request.user)
+        appointment = base_models.Appointment.objects.get(appointment_id=appointment_id, doctor=doctor)
+    except (doctor_models.Doctor.DoesNotExist, base_models.Appointment.DoesNotExist):
+        messages.error(request, 'Appointment not found or you do not have permission to view it.')
+        return redirect('doctor:dashboard')
+
     # Get local medical records
-    medical_records = MedicalRecord.objects.filter(appointment_id=appointment_id)
-    lab_tests = LabTest.objects.filter(appointment_id=appointment_id)
-    prescriptions = Prescription.objects.filter(appointment_id=appointment_id)
-    
+    medical_records = base_models.MedicalRecord.objects.filter(appointment_id=appointment_id)
+    lab_tests = base_models.LabTest.objects.filter(appointment_id=appointment_id)
+    prescriptions = base_models.Prescription.objects.filter(appointment_id=appointment_id)
+
     return render(request, 'doctor/appointment_detail.html', {
         'appointment': appointment,
         'medical_records': medical_records,
@@ -89,17 +86,15 @@ def appointment_detail(request, appointment_id):
 
 @login_required
 def cancel_appointment(request, appointment_id):
-    token = request.session.get('token')
-    if not token:
-        messages.error(request, "Authentication required")
-        return redirect('userauths:sign-in')
-    
-    response = APIService.delete_appointment(token, appointment_id)
-    if response.get('status') == 'success':
+    try:
+        doctor = doctor_models.Doctor.objects.get(user=request.user)
+        appointment = base_models.Appointment.objects.get(appointment_id=appointment_id, doctor=doctor)
+        appointment.status = "Cancelled"
+        appointment.save()
         messages.success(request, "Appointment cancelled successfully!")
-    else:
-        messages.error(request, response.get('message', 'Failed to cancel appointment'))
-    return redirect('doctor:appointment-list')
+    except (doctor_models.Doctor.DoesNotExist, base_models.Appointment.DoesNotExist):
+        messages.error(request, "Appointment not found or you do not have permission to cancel it.")
+    return redirect('doctor:appointments')
 
 @login_required
 def activate_appointment(request, appointment_id):
@@ -473,7 +468,7 @@ def appointment_list(request):
         messages.error(request, "Authentication required")
         return redirect('userauths:sign-in')
     
-    response = APIService.get_appointments(token)
+    response = APIService.get_appointments(jwt_token=token)
     if response.get('status') == 'success':
         appointments = response.get('appointments', [])
         return render(request, "doctor/appointment-list.html", {"appointments": appointments})

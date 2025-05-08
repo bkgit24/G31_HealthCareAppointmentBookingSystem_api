@@ -56,7 +56,8 @@ FLASK_TO_DJANGO_MODEL_MAPPING = {
     'user_registration_fields': {
         'full_name': 'full_name',
         'email': 'email',
-        'password': 'password1'
+        'password': 'password1',
+        'role': 'user_type',
     }
 }
 

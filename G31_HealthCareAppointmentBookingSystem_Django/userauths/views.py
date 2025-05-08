@@ -19,6 +19,19 @@ def register_view(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
+            # Set _raw_password for signal to use
+            user = form.save(commit=False)
+            user._raw_password = form.cleaned_data['password1']
+            user_type = form.cleaned_data.get('user_type')
+            user.user_type = user_type
+            user.save()
+            form.save_m2m()
+            # Automatically create Doctor or Patient profile
+            full_name = form.cleaned_data.get('full_name') or user.username or user.email
+            if user_type == 'Doctor':
+                doctor_models.Doctor.objects.get_or_create(user=user, defaults={'full_name': full_name})
+            elif user_type == 'Patient':
+                patient_models.Patient.objects.get_or_create(user=user, defaults={'full_name': full_name, 'email': user.email})
             # Map Django form data to Flask API registration format
             flask_user_data = translate_django_to_flask(form.cleaned_data, 'user_registration')
             response = APIService.register(flask_user_data)

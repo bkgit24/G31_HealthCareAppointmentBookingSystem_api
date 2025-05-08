@@ -8,6 +8,7 @@ from django.urls import reverse
 from base import models as base_models
 from patient import models as patient_models
 from doctor import models as doctor_models
+from base.forms import AppointmentUpdateForm
 
 
 @login_required
@@ -284,6 +285,25 @@ def reschedule_appointment(request, appointment_id):
             "appointment": appointment
         }
         return render(request, "patient/reschedule_appointment.html", context)
+    except (patient_models.Patient.DoesNotExist, base_models.Appointment.DoesNotExist):
+        messages.warning(request, "Please complete your profile setup by confirming your role.")
+        return redirect('userauths:select-role')
+
+
+@login_required
+def update_appointment(request, appointment_id):
+    try:
+        patient = patient_models.Patient.objects.get(user=request.user)
+        appointment = base_models.Appointment.objects.get(appointment_id=appointment_id, patient=patient)
+        if request.method == 'POST':
+            form = AppointmentUpdateForm(request.POST, instance=appointment)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Appointment updated successfully!")
+                return redirect('patient:dashboard')
+        else:
+            form = AppointmentUpdateForm(instance=appointment)
+        return render(request, 'patient/update_appointment.html', {'form': form, 'appointment': appointment})
     except (patient_models.Patient.DoesNotExist, base_models.Appointment.DoesNotExist):
         messages.warning(request, "Please complete your profile setup by confirming your role.")
         return redirect('userauths:select-role')

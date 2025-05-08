@@ -1,193 +1,142 @@
-{% extends 'partials/base.html' %}
-{% load static %}
+{% extends 'partials/base.html' %} {% block content %}
+<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+<section class="pt-5 pb-5">
+    <div class="container">
+        <div class="row mt-0 mt-md-4">
+            {% include 'doctor/sidebar.html' %}
 
-{% block content %}
-<div class="container py-5">
-    <!-- Stats Cards -->
-    <div class="row g-4 mb-4">
-        <div class="col-md-4">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0">
-                            <div class="bg-primary bg-opacity-10 p-3 rounded">
-                                <i class="fas fa-calendar-day text-primary fa-2x"></i>
+            <div class="col-lg-9 col-md-8 col-12">
+                <div class="row mb-4">
+                    <h4 class="mb-0 mb-4 fw-bold">Dashboard</h4>
+                    <div class="col-sm-6 col-lg-4 mb-3 mb-lg-0">
+                        <div class="d-flex justify-content-center align-items-center p-4 bg-danger bg-opacity-10 rounded-3">
+                            <span class="display-6 lh-1 text-purple mb-0">
+                                <i class="fas fa-calendar text-danger"></i>
+                            </span>
+                            <div class="ms-4">
+                                <div class="d-flex">
+                                    <h5 class="mb-0 fw-bold">{{ appointments|length }}</h5>
+                                </div>
+                                <p class="mb-0 h6 fw-semibold">Appointments</p>
                             </div>
                         </div>
-                        <div class="flex-grow-1 ms-3">
-                            <h6 class="text-muted mb-1">Today's Appointments</h6>
-                            <h3 class="mb-0">{{ todays_appointments_count }}</h3>
+                    </div>
+
+                    <div class="col-sm-6 col-lg-4 mb-3 mb-lg-0">
+                        <div class="d-flex justify-content-center align-items-center p-4 bg-dark bg-opacity-10 rounded-3">
+                            <span class="display-6 lh-1 text-dark mb-0">
+                                <i class="fas fa-bell"></i>
+                            </span>
+                            <div class="ms-4">
+                                <div class="d-flex">
+                                    <h5 class="mb-0 fw-bold">{{notifications.count}}</h5>
+                                </div>
+                                <p class="mb-0 h6 fw-semibold">Notifications</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-lg-4 mb-3 mb-lg-0">
+                        <div class="d-flex justify-content-center align-items-center p-4 bg-info bg-opacity-10 rounded-3">
+                            <span class="display-6 lh-1 text-info mb-0">
+                                <i class="fas fa-wallet"></i>
+                            </span>
+                            <div class="ms-4">
+                                <div class="d-flex">
+                                    <h5 class="mb-0 fw-bold">₹{{ total_earnings|floatformat:2 }}</h5>
+                                </div>
+                                <p class="mb-0 h6 fw-semibold">Total Earnings</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0">
-                            <div class="bg-success bg-opacity-10 p-3 rounded">
-                                <i class="fas fa-calendar-check text-success fa-2x"></i>
-                            </div>
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <h6 class="text-muted mb-1">Upcoming Appointments</h6>
-                            <h3 class="mb-0">{{ upcoming_appointments_count }}</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0">
-                            <div class="bg-info bg-opacity-10 p-3 rounded">
-                                <i class="fas fa-users text-info fa-2x"></i>
-                            </div>
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <h6 class="text-muted mb-1">Total Patients</h6>
-                            <h3 class="mb-0">{{ total_patients_count }}</h3>
-                        </div>
+
+                <div class="card mb-4">
+                    <div class="table-responsive overflow-y-hidden">
+                        <table class="table mb-0 text-nowrap table-hover table-centered text-nowrap">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Appointment ID</th>
+                                    <th>Patient</th>
+                                    <th>Issue</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for a in appointments %}
+                                <tr>
+                                    <td>{{a.appointment_id}}</td>
+                                    <td>{{a.patient.full_name}}</td>
+                                    <td>{{a.issues}}</td>
+                                    <td>{{a.appointment_date}}</td>
+                                    <td>{{a.status}}</td>
+                                    <td>
+                                        <a href="{% url 'doctor:appointment_detail' a.appointment_id %}" class="btn btn-secondary btn-sm"> <i class="fas fa-eye"></i></a>
+                                        <a href="{% url 'doctor:reschedule_appointment' a.appointment_id %}" class="btn btn-primary btn-sm">Edit</a>
+                                        <a href="{% url 'doctor:cancel_appointment' a.appointment_id %}" class="btn btn-danger btn-sm cancel-appointment-btn" data-cancel-url="{% url 'doctor:cancel_appointment' a.appointment_id %}">Cancel Appointment <i class="fas fa-trash ms-2"></i></a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</section>
+{% endblock %}
 
-    <!-- Quick Actions -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
-            <h5 class="card-title mb-4">Quick Actions</h5>
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <a href="{% url 'doctor:schedule' %}" class="btn btn-primary w-100">
-                        <i class="fas fa-clock me-2"></i>Manage Schedule
-                    </a>
-                </div>
-                <div class="col-md-4">
-                    <a href="{% url 'doctor:appointments' %}" class="btn btn-info w-100">
-                        <i class="fas fa-calendar-alt me-2"></i>All Appointments
-                    </a>
-                </div>
-                <div class="col-md-4">
-                    <a href="{% url 'doctor:profile' %}" class="btn btn-secondary w-100">
-                        <i class="fas fa-user-edit me-2"></i>Update Profile
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cancelButtons = document.querySelectorAll('.cancel-appointment-btn');
+        cancelButtons.forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const url = btn.getAttribute('data-cancel-url');
+                const modal = document.getElementById('cancelModal');
+                const confirmBtn = document.getElementById('confirmCancelBtn');
+                confirmBtn.onclick = function() {
+                    // Create a form and submit as POST with CSRF token
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = url;
+                    // Add CSRF token
+                    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+                    const csrfInput = document.createElement('input');
+                    csrfInput.type = 'hidden';
+                    csrfInput.name = 'csrfmiddlewaretoken';
+                    csrfInput.value = csrfToken;
+                    form.appendChild(csrfInput);
+                    document.body.appendChild(form);
+                    form.submit();
+                };
+                const modalInstance = new bootstrap.Modal(modal);
+                modalInstance.show();
+            });
+        });
+    });
+</script>
 
-    <!-- Today's Appointments -->
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h5 class="card-title mb-0">Today's Appointments</h5>
-                <a href="{% url 'doctor:appointments' %}" class="btn btn-link">View All</a>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Patient</th>
-                            <th>Time</th>
-                            <th>Reason</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for appointment in todays_appointments %}
-                        <tr>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    {% if appointment.patient.profile_image %}
-                                        <img src="{{ appointment.patient.profile_image.url }}" alt="{{ appointment.patient.name }}" class="rounded-circle me-2" width="40" height="40">
-                                    {% else %}
-                                        <img src="{% static 'assets/images/default-avatar.png' %}" alt="{{ appointment.patient.name }}" class="rounded-circle me-2" width="40" height="40">
-                                    {% endif %}
-                                    <div>
-                                        <h6 class="mb-0">{{ appointment.patient.name }}</h6>
-                                        <small class="text-muted">{{ appointment.patient.age }} years old</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>{{ appointment.time_slot }}</td>
-                            <td>{{ appointment.reason|truncatechars:30 }}</td>
-                            <td>
-                                <span class="badge bg-{{ appointment.status }}">
-                                    {{ appointment.status|title }}
-                                </span>
-                            </td>
-                            <td>
-                                <div class="btn-group">
-                                    <a href="{% url 'doctor:appointment_detail' appointment.id %}" class="btn btn-sm btn-info">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                    {% if appointment.status == 'pending' %}
-                                        <a href="{% url 'doctor:confirm_appointment' appointment.id %}" class="btn btn-sm btn-success">
-                                            <i class="fas fa-check"></i>
-                                        </a>
-                                    {% endif %}
-                                    {% if appointment.status == 'confirmed' %}
-                                        <a href="{% url 'doctor:complete_appointment' appointment.id %}" class="btn btn-sm btn-primary">
-                                            <i class="fas fa-check-double"></i>
-                                        </a>
-                                    {% endif %}
-                                </div>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="5" class="text-center py-4">
-                                <div class="text-muted">
-                                    <i class="fas fa-calendar-times fa-3x mb-3"></i>
-                                    <p class="mb-0">No appointments for today.</p>
-                                </div>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+<!-- Cancel Confirmation Modal -->
+<div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="cancelModalLabel"><i class="fas fa-exclamation-triangle me-2"></i>Confirm Cancellation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to cancel this appointment? This action cannot be undone.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, Keep Appointment</button>
+        <button type="button" class="btn btn-danger" id="confirmCancelBtn">Yes, Cancel</button>
+      </div>
     </div>
+  </div>
 </div>
-
-<style>
-    .card {
-        border: none;
-        transition: transform 0.2s ease-in-out;
-    }
-    .card:hover {
-        transform: translateY(-5px);
-    }
-    .btn {
-        transition: all 0.2s ease-in-out;
-    }
-    .btn:hover {
-        transform: translateY(-2px);
-    }
-    .badge {
-        padding: 0.5em 1em;
-    }
-    .badge.bg-pending {
-        background-color: #ffc107;
-        color: #000;
-    }
-    .badge.bg-confirmed {
-        background-color: #0dcaf0;
-        color: #000;
-    }
-    .badge.bg-completed {
-        background-color: #198754;
-    }
-    .badge.bg-cancelled {
-        background-color: #dc3545;
-    }
-</style>
-{% endblock content %}
+{% endblock %}
